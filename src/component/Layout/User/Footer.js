@@ -1,7 +1,8 @@
+
 function Footer() {
     return (
         <footer id="footer">
-            <div classNameName="footer-top">
+            <div className="footer-top">
                 <div className="container">
                     <div className="row">
                         <div className="col-sm-2">

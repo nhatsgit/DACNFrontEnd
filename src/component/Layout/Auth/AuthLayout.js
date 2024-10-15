@@ -1,5 +1,4 @@
 import Header from "./Header";
-
 function AuthLayout({ children }) {
     return (
         <>
