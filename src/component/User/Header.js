@@ -1,3 +1,5 @@
+import SearchForm from "./SearchForm/SearchForm";
+import { Link } from "react-router-dom";
 function Header() {
     return (<header id="header">
         <div className="header_top">
@@ -6,8 +8,8 @@ function Header() {
                     <div className="col-sm-6">
                         <div className="contactinfo">
                             <ul className="nav nav-pills">
-                                <li><a href="#">  </a></li>
-                                <li> <a href="#"><i className="fa fa-envelope"></i> nhatanh.nuis@gmail.com</a> </li>
+                                <li><a href="/">  </a></li>
+                                <li> <a href="/"><i className="fa fa-envelope"></i> nhatanh.nuis@gmail.com</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -28,9 +30,11 @@ function Header() {
             <div className="container">
                 <div className="row">
                     <div className="logo pull-left">
-                        <a ><img src="images/home/react.png" alt="" width={90} /></a>
+                        <Link to="/" ><img src="images/home/react.png" alt="" width={90} /></Link>
                     </div>
-
+                    <div className="col-sm-8">
+                        <SearchForm />
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,18 +52,21 @@ function Header() {
                     </div>
                     <div className="mainmenu pull-left">
                         <ul className="nav navbar-nav collapse navbar-collapse">
-
+                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-home"></i>Trang Chủ</a></li>
+                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-list-alt"></i>Đơn Hàng</a></li>
+                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-shopping-cart" z></i> Giỏ Hàng</a></li>
+                            <li><a href="/" ><i className="fa fa-user"></i> Tài Khoản</a></li>
                         </ul>
 
                     </div>
                     <div className="mainmenu pull-right">
 
                         <ul className="nav navbar-nav collapse navbar-collapse">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" id="register" >Đăng Ký</a>
+                            <li className="nav-item">
+                                <Link to="/login" className="nav-link text-dark" id="login" > Đăng Nhập</Link>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" id="login" > Đăng Nhập</a>
+                            <li className="nav-item">
+                                <Link to="/login" className="nav-link text-dark" id="login" > Đăng Nhập</Link>
                             </li>
 
                         </ul>

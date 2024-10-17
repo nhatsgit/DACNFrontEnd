@@ -6,8 +6,8 @@ function Header() {
                     <div className="col-sm-6">
                         <div className="contactinfo">
                             <ul className="nav nav-pills">
-                                <li><a href="#">  </a></li>
-                                <li> <a href="#"><i className="fa fa-envelope"></i> nhatanh.nuis@gmail.com</a> </li>
+                                <li><a href="/">  </a></li>
+                                <li> <a href="/"><i className="fa fa-envelope"></i> nhatanh.nuis@gmail.com</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -28,32 +28,9 @@ function Header() {
             <div className="container">
                 <div className="row">
                     <div className="logo pull-left">
-                        <a ><img src="images/home/react.png" alt="" width={90} /></a>
+                        <a href='/'><img src="images/home/react.png" alt="" width={90} /></a>
                     </div>
-                    <div className="col-sm-8">
-                        <form id="search-form" method="post" className="dropdown" >
-                            <input type="text" name="query" id="searchInput" style={{ width: '600px', height: '50px' }} placeholder="Tìm kiếm sản phẩm trong hệ thống..." />
-                            <div id="suggestions" style={{ display: 'block' }}>
-                                {/* <li>cccc</li> */}
-                            </div>
-                            <button
-                                style={{
-                                    width: '100px',
-                                    height: '50px',
-                                    backgroundColor: 'blue',
-                                    color: 'white',
-                                    border: 'none',
-                                    marginRight: '10px'
-                                }}
-                                type="submit"
-                                value="search"
-                                onMouseOver={(e) => e.target.style.color = 'black'}
-                                onMouseOut={(e) => e.target.style.color = 'white'}
-                            >
-                                Tìm Kiếm
-                            </button>
-                        </form>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -71,21 +48,18 @@ function Header() {
                     </div>
                     <div className="mainmenu pull-left">
                         <ul className="nav navbar-nav collapse navbar-collapse">
-                            <li><a onClick="activateLink(this)" ><i className="fa fa-home"></i>Trang Chủ</a></li>
-                            <li><a onClick="activateLink(this)" ><i className="fa fa-list-alt"></i>Đơn Hàng</a></li>
-                            <li><a onClick="activateLink(this)" ><i className="fa fa-shopping-cart" z></i> Giỏ Hàng</a></li>
-                            <li><a ><i className="fa fa-user"></i> Tài Khoản</a></li>
+
                         </ul>
 
                     </div>
                     <div className="mainmenu pull-right">
 
                         <ul className="nav navbar-nav collapse navbar-collapse">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" id="register" >Đăng Ký</a>
+                            <li className="nav-item">
+                                <a href='/' className="nav-link text-dark" id="register" >Đăng Ký</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" id="login" > Đăng Nhập</a>
+                            <li className="nav-item">
+                                <a href='/' className="nav-link text-dark" id="login" > Đăng Nhập</a>
                             </li>
 
                         </ul>

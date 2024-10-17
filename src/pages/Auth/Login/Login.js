@@ -1,46 +1,64 @@
+import React, { useState } from 'react';
 function Login() {
-    return (
-        <>
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState('');
 
-            <div className="row justify-content-center">
-                <div className="col-md-4">
-                    <section>
-                        <form id="account" method="post">
-                            <h2>ĐĂNG NHẬP</h2>
-                            <hr />
-                            <div asp-validation-summary="ModelOnly" className="text-danger" role="alert"></div>
-                            <div className="form-floating mb-3">
-                                <input asp-for="Input.UserName" className="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                                <label asp-for="Input.UserName" className="form-label">Tên đăng nhập</label>
-                                <span asp-validation-for="Input.UserName" className="text-danger"></span>
-                            </div>
-                            <div className="form-floating mb-3">
-                                <input asp-for="Input.Password" className="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                                <label asp-for="Input.Password" className="form-label">Mật Khẩu</label>
-                                <span asp-validation-for="Input.Password" className="text-danger"></span>
-                            </div>
-                            <div className="checkbox mb-3">
-                                <label asp-for="Input.RememberMe" className="form-label">
-                                    <input className="form-check-input" asp-for="Input.RememberMe" />
-                                    Nhớ mật khẩu
-                                </label>
-                            </div>
-                            <div>
-                                <button id="login-submit" type="submit" className="w-100 btn btn-lg btn-danger">Đăng nhập</button>
-                            </div>
-                            <div>
-                                <p>
-                                    <a id="forgot-password" asp-page="./ForgotPassword" style={{ color: 'red' }}>Quên mật khẩu?</a>
-                                </p>
-                                <p>
-                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" style={{ color: 'red' }}>Đăng ký tài khoản mới</a>
-                                </p>
-                            </div>
-                        </form>
-                    </section>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Xử lý đăng nhập tại đây
+        if (!email || !password) {
+            setError('Vui lòng nhập email và mật khẩu');
+        } else {
+            setError('');
+            console.log('Đăng nhập với email:', email, 'và mật khẩu:', password, 'Nhớ mật khẩu:', rememberMe);
+            // Gửi yêu cầu đăng nhập đến API ở đây
+        }
+    };
+
+    return (
+        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
+            <h2>Đăng Nhập</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        style={{ width: '100%', padding: '8px', margin: '8px 0' }}
+                    />
                 </div>
+                <div>
+                    <label>Mật khẩu:</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        style={{ width: '100%', padding: '8px', margin: '8px 0' }}
+                    />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        style={{ marginRight: '8px' }}
+                    />
+                    <label>Nhớ mật khẩu</label>
+                </div>
+                <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', marginTop: '10px' }}>
+                    Đăng Nhập
+                </button>
+            </form>
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                <p>Bạn chưa có tài khoản? <a href="/register">Đăng ký tại đây</a></p>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -1,5 +1,5 @@
 import './App.css';
-import UserLayout from './component/Layout/User/UserLayout';
+import UserLayout from './component/User/UserLayout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { publicRoutes } from './routes';
 import { Fragment } from 'react';
