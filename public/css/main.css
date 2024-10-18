@@ -1301,6 +1301,11 @@ h2.title {
   top: 35%;
 }
 
+.item-control {
+  position: absolute;
+  top: 35%;
+}
+
 .item-control i {
   background: #0fa2fe;
   color: #FFFFFF;
