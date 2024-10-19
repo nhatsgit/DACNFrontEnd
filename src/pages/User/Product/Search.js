@@ -6,20 +6,20 @@ function Search() {
     const categories = [1, 2, 3, 4, 5, 6, 7, 8]
     return (
         <>
-            <h2 style={{ textTransform: "capitalize" }} class="title text-center">Kết quả tìm kiếm cho từ khóa `{keyword}`</h2>
+            <h2 style={{ textTransform: "capitalize" }} className="title text-center">Kết quả tìm kiếm cho từ khóa `{keyword}`</h2>
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="left-sidebar">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-3">
+                            <div className="left-sidebar">
                                 <form>
-                                    <div class="panel-group category-products" id="categoryView">
+                                    <div className="panel-group category-products" id="categoryView">
                                         {
                                             categories.map((category) => (
 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style={{ color: "gray" }}>
+                                                <div className="panel panel-default">
+                                                    <div className="panel-heading">
+                                                        <h4 className="panel-title" style={{ color: "gray" }}>
                                                             <input type="radio" id="option1" name="ratio" value={category} />
                                                             {category * 166275}
                                                         </h4>
@@ -30,10 +30,10 @@ function Search() {
                                         }
                                     </div>
 
-                                    <div class="price-range">
+                                    <div className="price-range">
 
                                         <h2>Tầm Giá</h2>
-                                        <div class="well">
+                                        <div className="well">
                                             <table>
                                                 <tr>
                                                     <td><input id="minPrice" type="number" min="1000" value="0" style={{ width: "100px" }} placeholder="Từ ₫" /></td>
@@ -44,15 +44,41 @@ function Search() {
                                         </div>
                                     </div>
                                     <center><button onClick="Filter(1)" type="button">Lọc</button></center>
-                                    <div class="shipping text-center">
+                                    <div className="shipping text-center">
 
                                         <img src="../images/home/shipping.jpg" alt="" />
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-sm-9 padding-right" id="searchResults">
+                        <div className="col-sm-9 padding-right" id="searchResults">
                             <ListProduct size={9} uiSize={'4'} />
+                            <hr />
+                            <center>
+                                <ul className="pagination">
+
+                                    <li className="active">
+                                        <a className="page-link" >1</a>
+                                    </li>
+                                    <li className="">
+                                        <a className="page-link" >1</a>
+                                    </li>
+                                    <li className="">
+                                        <a className="page-link" >1</a>
+                                    </li>
+                                    <li className="">
+                                        <a className="page-link" >1</a>
+                                    </li>
+                                    <li className="">
+                                        <a className="page-link" >1</a>
+                                    </li>
+                                    <li className="">
+                                        <a className="page-link" >1</a>
+                                    </li>
+
+                                </ul>
+
+                            </center>
                         </div>
                     </div>
                 </div>

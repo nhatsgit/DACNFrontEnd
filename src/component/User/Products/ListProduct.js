@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-
 import { formatCurrency } from '../../../utils/FormatCurrency';
-
+import { Link } from 'react-router-dom';
+import { routePaths } from '../../../routes';
 function ListProduct({ size, uiSize }) {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -48,7 +48,7 @@ function ListProduct({ size, uiSize }) {
                                 <h2>{formatCurrency(product.id * 7000)}</h2>
                                 <p>{product.title}</p>
                                 <a href='/' className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart"></i>Bỏ Vào Giỏ</a>
-                                <a href='/' className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</a>
+                                <Link to={routePaths.productDetails} className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</Link>
                             </div>
                         </div>
                     </div>

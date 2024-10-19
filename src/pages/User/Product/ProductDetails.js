@@ -42,9 +42,7 @@ function ProductDetails() {
 
                                 </div>
                                 <div className="col-sm-7">
-                                    <div className="product-information" style={{
-                                        textAlign: "left"
-                                    }}>
+                                    <div className="product-information" style={{ textAlign: "left" }}>
                                         <h2>TenSp</h2>
                                         <p>Web ID:ProductId</p>
                                         <p style={{ textDecoration: "line-through" }}>Giá Gốc</p>

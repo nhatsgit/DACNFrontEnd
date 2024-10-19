@@ -1,5 +1,6 @@
 import SearchForm from "./SearchForm/SearchForm";
 import { Link } from "react-router-dom";
+import { routePaths } from "../../routes";
 function Header() {
     return (<header id="header">
         <div className="header_top">
@@ -30,7 +31,7 @@ function Header() {
             <div className="container">
                 <div className="row">
                     <div className="logo pull-left">
-                        <Link to="/" ><img src="images/home/react.png" alt="" width={90} /></Link>
+                        <Link to="/" ><img src="images/home/react.png" alt="" width={70} /></Link>
                     </div>
                     <div className="col-sm-8">
                         <SearchForm />
@@ -52,10 +53,10 @@ function Header() {
                     </div>
                     <div className="mainmenu pull-left">
                         <ul className="nav navbar-nav collapse navbar-collapse">
-                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-home"></i>Trang Chủ</a></li>
-                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-list-alt"></i>Đơn Hàng</a></li>
-                            <li><a href="/" onClick="activateLink(this)" ><i className="fa fa-shopping-cart" z></i> Giỏ Hàng</a></li>
-                            <li><a href="/" ><i className="fa fa-user"></i> Tài Khoản</a></li>
+                            <li><Link to={routePaths.home}  ><i className="fa fa-home"></i>Trang Chủ</Link></li>
+                            <li><Link to={routePaths.myorders}  ><i className="fa fa-list-alt"></i>Đơn Hàng</Link></li>
+                            <li><Link to={routePaths.mycarts}  ><i className="fa fa-shopping-cart" z></i> Giỏ Hàng</Link></li>
+                            <li><Link to={routePaths.home} ><i className="fa fa-user"></i> Tài Khoản</Link></li>
                         </ul>
 
                     </div>
