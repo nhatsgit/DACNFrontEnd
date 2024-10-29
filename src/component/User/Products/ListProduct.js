@@ -6,9 +6,11 @@ function ListProduct({ size, uiSize }) {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const api = "https://localhost:7233/api/Products";
+    const api2 = 'https://jsonplaceholder.typicode.com/photos'
     const fetchProducts = async () => {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/photos'); // Đường dẫn API giả lập
+            const response = await fetch(api2);
             if (!response.ok) {
                 throw new Error('Lỗi khi tải sản phẩm');
             }
@@ -38,15 +40,15 @@ function ListProduct({ size, uiSize }) {
                     <div className="product-image-wrapper">
                         <div className="single-products">
                             <div className="productinfo text-center">
-                                <img src={product.thumbnailUrl} height={200} width={200} alt="" />
+                                <img src={`https://localhost:7233${product.anhDaiDien}`} height={200} width={200} alt="" />
                                 <p style={{
                                     textAlign: 'right',
                                     color: 'red',
                                     backgroundColor: 'yellow',
                                     display: 'inline'
-                                }}>-{product.id * 7}%</p>
-                                <h2>{formatCurrency(product.id * 7000)}</h2>
-                                <p>{product.title}</p>
+                                }}>-{product.phanTramGiam}%</p>
+                                <h2>{formatCurrency(product.giaBan)}</h2>
+                                <p>{product.tenSp}</p>
                                 <a href='/' className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart"></i>Bỏ Vào Giỏ</a>
                                 <Link to={routePaths.productDetails} className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</Link>
                             </div>
