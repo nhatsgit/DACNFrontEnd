@@ -1,9 +1,24 @@
 import Slider from "../../../component/User/Slider/Slider";
 import ListProduct from "../../../component/User/Products/ListProduct";
+import * as ProductService from "../../../apiServices/ProductService";
+import { useEffect, useState } from "react";
 function Home() {
+    const [products, setProducts] = useState([]);
+    const [slider, setSlider] = useState([]);
+    useEffect(() => {
+        const fetchApi = async () => {
+            const suggestProduct = await ProductService.GetRandomProduct();
+            const sliderProduct = await ProductService.GetRandom3Product();
+            setProducts(suggestProduct);
+            setSlider(sliderProduct);
+        }
+        fetchApi();
+    }, []);
     return (
         <>
-            <Slider />
+
+            <Slider products={slider} />
+
             <section>
                 <div className="container">
                     <div className="row">
@@ -12,7 +27,7 @@ function Home() {
                                 <h2 style={{
                                     textTransform: 'capitalize',
                                 }} className="title text-center">Gợi ý hôm nay</h2>
-                                <ListProduct size={12} uiSize={'3'} />
+                                <ListProduct listProduct={products} size={12} uiSize={'3'} />
                             </div>
                         </div>
                     </div>
