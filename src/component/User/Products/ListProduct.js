@@ -1,42 +1,12 @@
-import { useEffect, useState } from 'react';
+
 import { formatCurrency } from '../../../utils/FormatCurrency';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../../routes';
-function ListProduct({ size, uiSize }) {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const api = "https://localhost:7233/api/Products";
-    const api2 = 'https://jsonplaceholder.typicode.com/photos'
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch(api2);
-            if (!response.ok) {
-                throw new Error('Lỗi khi tải sản phẩm');
-            }
-            const data = await response.json();
-            setProducts(data.slice(0, size));
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-    useEffect(() => {
-        fetchProducts();
-    });
-
-    if (loading) {
-        return <p>Đang tải sản phẩm...</p>;
-    }
-
-    if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
-    }
+function ListProduct({ listProduct, uiSize }) {
     return (
         <>
-            {products.map(product => (
-                <div key={product.id} className={`col-sm-${uiSize}`}>
+            {listProduct.map((product, index) => (
+                <div key={index} className={`col-sm-${uiSize}`}>
                     <div className="product-image-wrapper">
                         <div className="single-products">
                             <div className="productinfo text-center">
@@ -56,8 +26,6 @@ function ListProduct({ size, uiSize }) {
                     </div>
                 </div>
             ))}
-
-
         </>
     );
 }

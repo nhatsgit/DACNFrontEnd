@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { routePaths } from '../../../routes';
 import { Link } from 'react-router-dom';
+import * as SearchService from '../../../apiServices/SearchService';
+
 function SearchForm() {
 
     const [keyword, setKeyword] = useState("");
@@ -16,7 +18,12 @@ function SearchForm() {
             setKeyword('');
             return;
         }
-        fetchProducts(debouncedKeyword);
+        const fetchApi = async () => {
+            const result = await SearchService.SearchSuggestion(debouncedKeyword);
+
+            setSuggestions(result);
+        }
+        fetchApi();
         setShowSuggestions(true);
     }, [debouncedKeyword]);
 
@@ -33,22 +40,8 @@ function SearchForm() {
         setKeyword(suggestion);
         setShowSuggestions(false);
     }
-    const fetchProducts = async (query) => {
-        try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/photos'); // Đường dẫn API giả lập
-            if (!response.ok) {
-                throw new Error('Lỗi khi tải sản phẩm');
-            }
-            const data = await response.json();
-            const results = data.filter(result => result.title.startsWith(query))
-            setSuggestions(results.slice(0, 5))
 
-        } catch (err) {
-            return
-        } finally {
-            return
-        }
-    };
+
     return (
         <form id="search-form" className="dropdown">
             <div className="search-container">
@@ -90,8 +83,8 @@ function SearchForm() {
                 (
                     <div id="suggestions" style={{ display: 'block' }}>
                         {
-                            suggestions.map((result) => (
-                                <li onClick={() => setKeyword(result.title)}>{result.title}</li>
+                            suggestions.map((result, index) => (
+                                <li key={index} onClick={() => setKeyword(result)}>{result}</li>
                             ))
                         }
                     </div>
