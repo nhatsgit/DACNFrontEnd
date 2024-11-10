@@ -1,151 +1,176 @@
+import { useEffect, useState } from "react";
+import * as OrderService from "../../../apiServices/OrderService";
+import { formatCurrency } from "../../../utils/FormatCurrency";
+import { useLocation } from "react-router-dom";
+
 function OrderDetails() {
+    const query = new URLSearchParams(useLocation().search);
+    const id = query.get('id');
+    const [order, setOrder] = useState(null); // Chờ dữ liệu có từ API
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const orderRes = await OrderService.GetOrderById(id);
+                setOrder(orderRes);
+            } catch (error) {
+                console.error("Error fetching order data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchApi();
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
             <section id="cart_items">
-                <div class="container">
-                    <div class="breadcrumbs">
-                        <ol class="breadcrumb">
+                <div className="container">
+                    <div className="breadcrumbs">
+                        <ol className="breadcrumb">
                             <h1>Thông tin đơn hàng</h1>
                         </ol>
                     </div>
-                    <div class="table-responsive cart_info">
-                        <table class="table table-condensed">
+                    <div className="table-responsive cart_info">
+                        <table className="table table-condensed">
                             <thead>
-                                <tr class="cart_menu">
-                                    <td class="image" style={{ width: "200px" }}>Ảnh</td>
-                                    <td class="description">Tên sản phẩm</td>
-                                    <td class="price">Đơn giá</td>
-                                    <td class="quantity">Số lượng mua</td>
-                                    <td class="total">Thành tiền</td>
+                                <tr className="cart_menu">
+                                    <td className="image" style={{ width: "200px" }}>Ảnh</td>
+                                    <td className="description">Tên sản phẩm</td>
+                                    <td className="price">Đơn giá</td>
+                                    <td className="quantity">Số lượng mua</td>
+                                    <td className="total">Thành tiền</td>
                                     <td></td>
                                 </tr>
                             </thead>
                             <tbody>
+                                {order.orderDetails.map((orderDetail, index) => {
+                                    return <tr key={index}>
+                                        <td className="cart_product" style={{ width: "200px" }}>
+                                            <a ><img src={`https://localhost:7233${orderDetail.product.anhDaiDien}`} alt="" width="120" height="100" /></a>
+                                        </td>
+                                        <td className="cart_description">
+                                            <h4><a >{orderDetail.product.tenSp}</a></h4>
+                                            <p>Web ID: 232</p>
+                                        </td>
+                                        <td className="cart_price">
+                                            <p>{formatCurrency(orderDetail.price)}</p>
+                                        </td>
+                                        <td className="cart_price">
+                                            <p>x{orderDetail.quantity}</p>
+                                        </td>
+                                        <td className="cart_total" id="cartTotal">
+                                            <p className="cart_total_price" id="totalPrice">{formatCurrency(orderDetail.price * orderDetail.quantity)}</p>
+                                        </td>
+                                        <td>
 
-                                <tr>
-                                    <td class="cart_product" style={{ width: "200px" }}>
-                                        <a asp-controller="Products" asp-action="Details" asp-route-ma="@item.ProductId"><img src="images/product-details/product.png" alt="" width="120" height="100" /></a>
-                                    </td>
-                                    <td class="cart_description">
-                                        <h4><a asp-controller="Products" asp-action="Details" asp-route-ma="@item.ProductId">@item.Product.TenSp</a></h4>
-                                        <p>Web ID: 232</p>
-                                    </td>
-                                    <td class="cart_price">
-                                        <p>20000</p>
-                                    </td>
-                                    <td class="cart_price">
-                                        <p>x3</p>
-                                    </td>
-                                    <td class="cart_total" id="cartTotal">
-                                        <p class="cart_total_price" id="totalPrice">60000</p>
-                                    </td>
-                                    <td>
+                                            {order.orderStatus.orderStatusId >= 5 ?
+                                                <>
+                                                    {orderDetail.isReview != true ?
+                                                        <button onClick={() => { }} id="openModalBtn" type="button" className="btn btn-fefault cart">
+                                                            Đánh Giá
+                                                        </button>
+                                                        : null}
 
-                                        <button onclick="openForm(@item.ProductId)" id="openModalBtn" type="button" class="btn btn-fefault cart">Đánh Giá</button>
+                                                    <button type="button" className="btn btn-fefault cart">
+                                                        <a
+                                                            style={{ color: "white" }}
+                                                            onMouseOver={(e) => (e.currentTarget.style.color = "black")}
+                                                            onMouseOut={(e) => (e.currentTarget.style.color = "white")}
+                                                        >Mua Lại</a>
+                                                    </button>
+                                                </>
 
-
-
-                                        <button type="button" class="btn btn-fefault cart">
-                                            <a a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@item.ProductId" asp-route-quantity="1" style={{ color: "white" }} onmouseover="this.style.color='black'" onmouseout="this.style.color='white'">Mua Lại</a>
-                                        </button>
-
-
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td class="cart_product" style={{ width: "200px" }}>
-                                        <a asp-controller="Products" asp-action="Details" asp-route-ma="@item.ProductId"><img src="images/product-details/product.png" alt="" width="120" height="100" /></a>
-                                    </td>
-                                    <td class="cart_description">
-                                        <h4><a asp-controller="Products" asp-action="Details" asp-route-ma="@item.ProductId">@item.Product.TenSp</a></h4>
-                                        <p>Web ID: 232</p>
-                                    </td>
-                                    <td class="cart_price">
-                                        <p>20000</p>
-                                    </td>
-                                    <td class="cart_price">
-                                        <p>x3</p>
-                                    </td>
-                                    <td class="cart_total" id="cartTotal">
-                                        <p class="cart_total_price" id="totalPrice">60000</p>
-                                    </td>
-                                    <td>
-
-                                        <button onclick="openForm(@item.ProductId)" id="openModalBtn" type="button" class="btn btn-fefault cart">Đánh Giá</button>
+                                                : null}
 
 
 
-                                        <button type="button" class="btn btn-fefault cart">
-                                            <a a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@item.ProductId" asp-route-quantity="1" style={{ color: "white" }} onmouseover="this.style.color='black'" onmouseout="this.style.color='white'">Mua Lại</a>
-                                        </button>
+                                        </td>
+
+                                    </tr>
+                                })}
 
 
-                                    </td>
-
-                                </tr>
 
 
                             </tbody>
                         </table>
                     </div>
                     <div style={{ paddingLeft: "1em", textAlign: "left" }}>
-                        <dl class="row">
-                            <dt class="col-sm-3">
+                        <dl className="row">
+                            <dt className="col-sm-3">
                                 Thời Gian Đặt:
                             </dt>
-                            <dd class="col-sm-9">
-                                12/2/2222
+                            <dd className="col-sm-9">
+                                {order.orderDate}
                             </dd>
 
-                            <dt class="col-sm-3">
+                            <dt className="col-sm-3">
                                 Địa Chỉ Giao Hàng:
                             </dt>
-                            <dd class="col-sm-9">
-                                VN
+                            <dd className="col-sm-9">
+                                {order.shippingAddress}
                             </dd>
-                            <dt class="col-sm-3">
+                            <dt className="col-sm-3">
                                 Ghi Chú:
                             </dt>
-                            <dd class="col-sm-9">
-                                Dat hang
+                            <dd className="col-sm-9">
+                                {order.notes}
                             </dd>
-                            <dt class="col-sm-3">
+                            <dt className="col-sm-3">
                                 Trạng Thái Đơn Hàng:
                             </dt>
-                            <dd class="col-sm-9">
-                                Da giao hang
+                            <dd className="col-sm-9">
+                                {order.orderStatus?.tenTrangThai || 'Loading...'}
                             </dd>
-                            <dt class="col-sm-3">
+                            <dt className="col-sm-3">
                                 Phương Thức Thanh Toán:
                             </dt>
-                            <dd class="col-sm-9">
-                                Truc Tiep
+                            <dd className="col-sm-9">
+                                {order.payment?.tenLoai || 'Loading...'}
                             </dd>
-                            <dt class="col-sm-3">
+                            <dt className="col-sm-3">
                                 Mã Giảm Giá:
                             </dt>
 
-                            <dd class="col-sm-9">
-                                GIAMGIA3 giảm 60 % tổng đơn hàng
-                                , đơn tối thiểu 99900
-                                , giảm tối đa 88891
+
+                            <dd className="col-sm-9">
+                                {order.voucher?.phanTramGiam === 0 ? (
+                                    "Không có"
+                                ) : (
+                                    <>
+                                        {order.voucher?.voucherCode}: giảm {order.voucher?.phanTramGiam}% tổng đơn hàng
+                                        {order.voucher?.donToiThieu > 0 && (
+                                            <> , đơn tối thiểu {formatCurrency(order.voucher?.donToiThieu || 0)} </>
+                                        )}
+                                        {order.voucher?.giamToiDa > 0 && (
+                                            <> , giảm tối đa {formatCurrency(order.voucher?.giamToiDa || 0)} </>
+                                        )}
+                                    </>
+                                )}
                             </dd>
 
-                            <dt class="col-sm-3">
+
+
+                            <dt className="col-sm-3">
                                 <h3>Tổng Đơn Hàng:</h3>
                             </dt>
-                            <dd class="col-sm-9">
-                                <h3>Tong don hang:89898</h3>
+                            <dd className="col-sm-9">
+                                <h3>{formatCurrency(order.totalPrice)}</h3>
                             </dd>
                         </dl>
 
-                        <form asp-action="Delete" asp-controller="Orders" asp-route-id="@Model.OrderId" method="post">
-                            <input type="submit" value="Hủy Đơn" onclick="return confirm('Bạn Có Chắc Chắn Muốn Hủy Đơn Này?');" class="btn btn-danger" />
+                        <form method="post">
+                            <input type="submit" value="Hủy Đơn" onClick={() => { }} className="btn btn-danger" />
                         </form>
 
-                        <form asp-action="GiveBackOrder" asp-controller="Orders" asp-route-id="@Model.OrderId" method="post">
-                            <input type="submit" value="Yêu cầu trả hàng" onclick="return confirm('Bạn Có Chắc Chắn Muốn Yêu Cầu Trả Hàng?');" class="btn btn-danger" />
+                        <form method="post">
+                            <input type="submit" value="Yêu cầu trả hàng" onClick={() => { }} className="btn btn-danger" />
                         </form>
 
                     </div>

@@ -1,6 +1,8 @@
 
 function Slider({ products }) {
-
+    if (!products || products.length === 0) {
+        return <div>Đang tải...</div>;
+    }
     return (
         <>
             <section id="slider">

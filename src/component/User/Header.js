@@ -1,7 +1,20 @@
 import SearchForm from "./SearchForm/SearchForm";
 import { Link } from "react-router-dom";
 import { routePaths } from "../../routes";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 function Header() {
+    const { auth, setAuth } = useContext(AuthContext);
+    const HandleLogout = () => {
+
+        localStorage.removeItem('ACCESS_TOKEN');
+        setAuth({
+            isAuthenticated: false,
+            user: {
+                username: ""
+            }
+        })
+    }
     return (
         <header id="header">
             <div className="header_top">
@@ -63,12 +76,30 @@ function Header() {
                         <div className="mainmenu pull-right">
 
                             <ul className="nav navbar-nav collapse navbar-collapse">
-                                <li className="nav-item">
-                                    <Link to="/login" className="nav-link text-dark" id="login" > Đăng Nhập</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/login" className="nav-link text-dark" id="register" > Đăng Ký</Link>
-                                </li>
+                                {
+                                    auth.isAuthenticated
+                                        ?
+                                        <>
+
+                                            <li className="nav-item">
+                                                <img style={{ borderRadius: '50%' }} width="20" height="20" src="images/home/react.png" alt="avatar" ></img>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link to="/login" className="nav-link text-dark" id="login" > Hello {auth.user.username}</Link>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link to="/" onClick={HandleLogout} className="nav-link text-dark" id="register" > Đăng Xuất</Link>
+                                            </li></>
+                                        :
+                                        <>
+                                            <li className="nav-item">
+                                                <Link to="/login" className="nav-link text-dark" id="login" > Đăng Nhập</Link>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link to="/login" className="nav-link text-dark" id="register" > Đăng Ký</Link>
+                                            </li>
+                                        </>
+                                }
 
                             </ul>
                         </div>

@@ -3,6 +3,9 @@ import { formatCurrency } from '../../../utils/FormatCurrency';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../../routes';
 function ListProduct({ listProduct, uiSize }) {
+    if (!listProduct || listProduct.length === 0) {
+        return <div>Đang tải...</div>;
+    }
     return (
         <>
             {listProduct.map((product, index) => (
@@ -20,7 +23,7 @@ function ListProduct({ listProduct, uiSize }) {
                                 <h2>{formatCurrency(product.giaBan)}</h2>
                                 <p>{product.tenSp}</p>
                                 <a href='/' className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart"></i>Bỏ Vào Giỏ</a>
-                                <Link to={routePaths.productDetails} className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</Link>
+                                <Link to={`${routePaths.productDetails}?id=${product.productId}`} className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</Link>
                             </div>
                         </div>
                     </div>

@@ -2,21 +2,27 @@ import Slider from "../../../component/User/Slider/Slider";
 import ListProduct from "../../../component/User/Products/ListProduct";
 import * as ProductService from "../../../apiServices/ProductService";
 import { useEffect, useState } from "react";
+
 function Home() {
     const [products, setProducts] = useState([]);
     const [slider, setSlider] = useState([]);
     useEffect(() => {
         const fetchApi = async () => {
-            const suggestProduct = await ProductService.GetRandomProduct();
-            const sliderProduct = await ProductService.GetRandom3Product();
-            setProducts(suggestProduct);
-            setSlider(sliderProduct);
+
+            try {
+                const suggestProduct = await ProductService.GetRandomProduct();
+                const sliderProduct = await ProductService.GetRandom3Product();
+
+                setProducts(suggestProduct);
+                setSlider(sliderProduct);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         }
         fetchApi();
     }, []);
     return (
         <>
-
             <Slider products={slider} />
 
             <section>
