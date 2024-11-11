@@ -1,7 +1,6 @@
-function Orders() {
-    return (
-    <section>
-        <h1 style={{textAlign:"center"}}>Đơn hàng của shop</h1>
+function OrderNotConfirm() {
+    return(<section>
+        <h1 style={{textAlign:"center"}}>Đơn hàng chờ xác nhận</h1>
         <section>
         <div className="container sum" style={{width: "80%",margin:" 0 auto",padding: "1rem",border:" 1px solid #333", }}>
         <strong>Ngày đặt: 04/11/2024 11:57</strong>
@@ -33,7 +32,6 @@ function Orders() {
         <div className="center" style={{display: "flex", justifyContent: "center",  height: "150%",}}>
         <div className="pagination-container"><span>1</span></div>
         </div>
-    </section>);
-}
-
-export default Orders;
+    </section>)
+};
+export default OrderNotConfirm;

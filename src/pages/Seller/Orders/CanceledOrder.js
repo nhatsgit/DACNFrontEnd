@@ -1,7 +1,6 @@
-function Orders() {
-    return (
-    <section>
-        <h1 style={{textAlign:"center"}}>Đơn hàng của shop</h1>
+function CanceledOrder() {
+    return(<section>
+        <h1 style={{textAlign:"center"}}>Đơn hàng đã hủy</h1>
         <section>
         <div className="container sum" style={{width: "80%",margin:" 0 auto",padding: "1rem",border:" 1px solid #333", }}>
         <strong>Ngày đặt: 04/11/2024 11:57</strong>
@@ -19,7 +18,7 @@ function Orders() {
         </div>
         <div className="row third p-3" style={{display: "flex", justifyContent: "space-between", alignItems: "center",padding: "1rem",borderTop:" 1px solid #333", }}>
         <div>
-            <h3 style={{color: "red"}}>Chờ Xác Nhận Đơn Hàng</h3>
+            <h3 style={{color: "red"}}>Đã hủy đơn</h3>
         </div>
         <div className="col-md-6 text-right">
             <h3 style={{color: "red"}}><span>Thành tiền:</span> 182.000 ₫</h3>
@@ -33,7 +32,6 @@ function Orders() {
         <div className="center" style={{display: "flex", justifyContent: "center",  height: "150%",}}>
         <div className="pagination-container"><span>1</span></div>
         </div>
-    </section>);
-}
-
-export default Orders;
+    </section>)
+};
+export default CanceledOrder;

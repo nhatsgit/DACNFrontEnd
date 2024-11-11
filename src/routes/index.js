@@ -8,11 +8,11 @@ import MyOrders from '../pages/User/Orders/MyOrders';
 import Shop from '../pages/User/Shop/Shop';
 import OrderDetails from '../pages/User/Orders/OrderDetails';
 import CheckOut from '../pages/User/Cart/CheckOut';
-import Products from '../pages/Seller/Product';
-import Staff from '../pages/Seller/Staff';
-import Orders from '../pages/Seller/Orders';
+import Products from '../pages/Seller/Products/Product';
+import Staff from '../pages/Seller/Staff/Staff';
+import Orders from '../pages/Seller/Orders/Orders';
 import Test from '../pages/Seller/Test';
-import Analyze from '../pages/Seller/Analyze';
+import Analyze from '../pages/Seller/Analyze/Analyze';
 import AuthLayout from '../component/Auth/AuthLayout';
 import SellerLayout from '../component/Seller/SellerLayout';
 const routePaths = {
