@@ -1,7 +1,8 @@
 
-import { formatCurrency } from '../../../utils/FormatCurrency';
+import { FormatCurrency } from '../../../utils/FormatCurrency';
 import { Link } from 'react-router-dom';
 import { routePaths } from '../../../routes';
+import { CaculateDiscountPrice } from '../../../utils/CaculateDiscountPrice';
 function ListProduct({ listProduct, uiSize }) {
     if (!listProduct || listProduct.length === 0) {
         return <div>Đang tải...</div>;
@@ -20,7 +21,7 @@ function ListProduct({ listProduct, uiSize }) {
                                     backgroundColor: 'yellow',
                                     display: 'inline'
                                 }}>-{product.phanTramGiam}%</p>
-                                <h2>{formatCurrency(product.giaBan)}</h2>
+                                <h2>{FormatCurrency(CaculateDiscountPrice(product.giaBan, product.phanTramGiam))}</h2>
                                 <p>{product.tenSp}</p>
                                 <a href='/' className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart"></i>Bỏ Vào Giỏ</a>
                                 <Link to={`${routePaths.productDetails}?id=${product.productId}`} className="btn btn-default add-to-cart"><i className="fa fa-info-circle"></i>Xem Chi Tiết</Link>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import * as OrderService from "../../../apiServices/OrderService";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { FormatCurrency } from "../../../utils/FormatCurrency";
 import { useLocation } from "react-router-dom";
 
 function OrderDetails() {
@@ -59,13 +59,13 @@ function OrderDetails() {
                                             <p>Web ID: 232</p>
                                         </td>
                                         <td className="cart_price">
-                                            <p>{formatCurrency(orderDetail.price)}</p>
+                                            <p>{FormatCurrency(orderDetail.price)}</p>
                                         </td>
                                         <td className="cart_price">
                                             <p>x{orderDetail.quantity}</p>
                                         </td>
                                         <td className="cart_total" id="cartTotal">
-                                            <p className="cart_total_price" id="totalPrice">{formatCurrency(orderDetail.price * orderDetail.quantity)}</p>
+                                            <p className="cart_total_price" id="totalPrice">{FormatCurrency(orderDetail.price * orderDetail.quantity)}</p>
                                         </td>
                                         <td>
 
@@ -146,10 +146,10 @@ function OrderDetails() {
                                     <>
                                         {order.voucher?.voucherCode}: giảm {order.voucher?.phanTramGiam}% tổng đơn hàng
                                         {order.voucher?.donToiThieu > 0 && (
-                                            <> , đơn tối thiểu {formatCurrency(order.voucher?.donToiThieu || 0)} </>
+                                            <> , đơn tối thiểu {FormatCurrency(order.voucher?.donToiThieu || 0)} </>
                                         )}
                                         {order.voucher?.giamToiDa > 0 && (
-                                            <> , giảm tối đa {formatCurrency(order.voucher?.giamToiDa || 0)} </>
+                                            <> , giảm tối đa {FormatCurrency(order.voucher?.giamToiDa || 0)} </>
                                         )}
                                     </>
                                 )}
@@ -161,7 +161,7 @@ function OrderDetails() {
                                 <h3>Tổng Đơn Hàng:</h3>
                             </dt>
                             <dd className="col-sm-9">
-                                <h3>{formatCurrency(order.totalPrice)}</h3>
+                                <h3>{FormatCurrency(order.totalPrice)}</h3>
                             </dd>
                         </dl>
 

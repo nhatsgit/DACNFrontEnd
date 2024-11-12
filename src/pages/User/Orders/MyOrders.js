@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import * as OrderService from "../../../apiServices/OrderService";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { FormatCurrency } from "../../../utils/FormatCurrency";
 import styles from './Orders.module.css'
 import { useNavigate } from "react-router-dom";
+import { routePaths } from "../../../routes";
 function MyOrders() {
     const [orders, setOrders] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
@@ -13,7 +14,6 @@ function MyOrders() {
         const fetchApi = async () => {
             try {
                 const res = await OrderService.GetMyOrders(currentPage);
-                console.log(res)
 
                 setOrders(res.items)
                 setCurrentPage(res.pageNumber)
@@ -30,7 +30,6 @@ function MyOrders() {
     const HandleSelectPage = async (pageNumber) => {
         try {
             const res = await OrderService.GetMyOrders(pageNumber);
-            console.log(res)
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
@@ -52,7 +51,8 @@ function MyOrders() {
             top: 0,
             behavior: 'smooth',
         });
-        navigate('/orderDetails?id=' + orderId)
+
+        navigate(`${routePaths.orderdetails}?id=${orderId}`)
 
     }
     if (loading) {
@@ -83,7 +83,7 @@ function MyOrders() {
                                                     </div>
                                                     <div className="col-md-6 text-right">
                                                         <h5 className="text-dark">
-                                                            Đơn giá: {formatCurrency(orderDetail.price)}
+                                                            Đơn giá: {FormatCurrency(orderDetail.price)}
                                                         </h5>
                                                         <h5 className="text-dark">
                                                             Số lượng: {orderDetail.quantity}
@@ -100,7 +100,7 @@ function MyOrders() {
                                             </div>
                                             <div className="col-md-6 text-right">
                                                 <h3 style={{ color: "red" }}>
-                                                    <span>Thành tiền:</span>{formatCurrency(order.totalPrice)}
+                                                    <span>Thành tiền:</span>{FormatCurrency(order.totalPrice)}
                                                 </h3>
 
                                                 <button type="button" onClick={() => HandleOnClickDetail(order.orderId)} className="btn btn-fefault cart">

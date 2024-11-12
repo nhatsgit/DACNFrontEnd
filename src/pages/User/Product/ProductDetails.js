@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import * as ProductService from "../../../apiServices/ProductService";
 import { useEffect, useState } from "react";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { FormatCurrency } from "../../../utils/FormatCurrency";
+import { CaculateDiscountPrice } from "../../../utils/CaculateDiscountPrice";
 
 function ProductDetails() {
     const query = new URLSearchParams(useLocation().search);
@@ -79,9 +80,9 @@ function ProductDetails() {
                                     <div className="product-information" style={{ textAlign: "left" }}>
                                         <h2>{product.tenSp}</h2>
                                         <p>Web ID:{product.productId}</p>
-                                        <p style={{ textDecoration: "line-through" }}>{formatCurrency(product.giaBan)}</p>
+                                        <p style={{ textDecoration: "line-through" }}>{FormatCurrency(product.giaBan)}</p>
                                         <span>
-                                            <span> Giá:{formatCurrency(product.giaBan - (product.giaBan * product.phanTramGiam / 100))}</span>
+                                            <span> Giá:{FormatCurrency(CaculateDiscountPrice(product.giaBan, product.phanTramGiam))}</span>
 
                                             <form>
                                                 <input id="txtQuantity" onChange={() => { }} type="number" min="1" value="1" onInput={() => { }} name="quantity" />
