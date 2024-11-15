@@ -15,6 +15,7 @@ import Test from '../pages/Seller/Test';
 import Analyze from '../pages/Seller/Analyze/Analyze';
 import AuthLayout from '../component/Auth/AuthLayout';
 import SellerLayout from '../component/Seller/SellerLayout';
+
 const routePaths = {
     home: '/',
     productDetails: '/productDetails',
