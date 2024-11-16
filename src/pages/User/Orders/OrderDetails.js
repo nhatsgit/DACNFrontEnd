@@ -17,14 +17,16 @@ function OrderDetails() {
             } catch (error) {
                 console.error("Error fetching order data:", error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             }
         };
         fetchApi();
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Đang cập nhật dữ liệu...</div>;
     }
 
     return (

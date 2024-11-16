@@ -18,6 +18,9 @@ function Home() {
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
+            finally {
+
+            }
         }
         fetchApi();
     }, []);

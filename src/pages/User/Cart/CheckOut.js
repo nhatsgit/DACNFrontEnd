@@ -19,7 +19,9 @@ function CheckOut() {
             } catch (error) {
                 console.error("Error fetching order data:", error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             }
         }
         FetchProduct()
@@ -96,7 +98,7 @@ function CheckOut() {
                                                         cart.cartItems.map((cartItem, index) => {
                                                             return <tr key={index}>
                                                                 <td className="cart_product" style={{ width: "200px" }}>
-                                                                    <a ><img src={`https://localhost:7233${cartItem.product.anhDaiDien}`} alt="" width={120} height={100} /></a>
+                                                                    <a ><img src={`${process.env.REACT_APP_API_URL}${cartItem.product.anhDaiDien}`} alt="" width={120} height={100} /></a>
                                                                 </td>
                                                                 <td className="cart_description">
                                                                     <h4><a >{cartItem.product.tenSp}</a></h4>
@@ -105,12 +107,8 @@ function CheckOut() {
                                                                 <td className="cart_price">
                                                                     <p>{FormatCurrency(CaculateDiscountPrice(cartItem.product.giaBan, cartItem.product.phanTramGiam))}</p>
                                                                 </td>
-                                                                <td>
-                                                                    <div>
-                                                                        <div className="form-group">
-                                                                            <input id="txtQuantity_@item.ProductId" onChange={() => { }} type="number" min="1" name="txtQuantity" value={cartItem.quantity} style={{ width: "100px" }} onInput={() => { }} />
-                                                                        </div>
-                                                                    </div>
+                                                                <td className="cart_price">
+                                                                    <p>{cartItem.quantity}</p>
                                                                 </td>
                                                                 <td className="cart_total" id="cartTotal">
                                                                     <p className="cart_total_price" id="totalPrice">{FormatCurrency(cartItem.quantity * CaculateDiscountPrice(cartItem.product.giaBan, cartItem.product.phanTramGiam))}</p>

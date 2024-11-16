@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 const request = axios.create({
-    baseURL: 'https://localhost:7233/api/',
+    baseURL: `${process.env.REACT_APP_API_URL}/api/`,
 });
 
 request.interceptors.request.use(
@@ -23,7 +23,7 @@ request.interceptors.response.use(
     response => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+            sessionStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
             localStorage.removeItem('ACCESS_TOKEN');
             window.location.href = '/login';
         }

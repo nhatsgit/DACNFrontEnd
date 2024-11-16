@@ -22,7 +22,9 @@ function MyOrders() {
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             }
         }
         fetchApi();
@@ -41,7 +43,9 @@ function MyOrders() {
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
         }
     }
     const HandleOnClickDetail = (orderId) => {
@@ -56,7 +60,7 @@ function MyOrders() {
 
     }
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Đang cập nhật dữ liệu...</div>;
     }
     return (
         <>

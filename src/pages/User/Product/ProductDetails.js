@@ -1,17 +1,20 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as ProductService from "../../../apiServices/ProductService";
 import { useEffect, useState } from "react";
 import { FormatCurrency } from "../../../utils/FormatCurrency";
 import { CaculateDiscountPrice } from "../../../utils/CaculateDiscountPrice";
-
+import { routePaths } from "../../../routes";
+import * as ShopingCartService from "../../../apiServices/ShopingCartService";
 function ProductDetails() {
     const query = new URLSearchParams(useLocation().search);
     const id = query.get('id');
+    const navigate = useNavigate();
     const [product, setProduct] = useState({})
     const [category, setCategory] = useState(' ')
     const [brand, setBrand] = useState(' ')
     const [loading, setLoading] = useState(true);
-
+    const [addToCartQuantity, setAddToCartQuantity] = useState(1);
+    const [error, setError] = useState('');
     useEffect(() => {
         const FetchProduct = async () => {
             try {
@@ -28,13 +31,37 @@ function ProductDetails() {
             } catch (error) {
                 console.error("Error fetching order data:", error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 500);
             }
         }
         FetchProduct()
     }, []);
+    const HandleAddToCart = async (productId, quantity) => {
+        if (addToCartQuantity === '') {
+            setError('Không được để trống');
+        } else {
+            try {
+
+                const res = await ShopingCartService.addToCart(productId, quantity);
+                console.log(res);
+            } catch (error) {
+                setError(error);
+            } finally {
+                navigate(routePaths.mycarts)
+            }
+        }
+    }
+    const HandleInputChange = (e) => {
+        const newValue = e.target.value;
+        if (newValue === '' || (Number(newValue) > 0)) {
+            setAddToCartQuantity(newValue);
+            setError('');
+        }
+    };
     if (loading) {
-        return <div>Đang tải...</div>;
+        return <div>Đang cập nhật dữ liệu...</div>;
     }
     return (
         <>
@@ -45,7 +72,7 @@ function ProductDetails() {
                             <div className="product-details">
                                 <div className="col-sm-5">
                                     <div className="view-product">
-                                        <img src={`https://localhost:7233${product.anhDaiDien}`} alt="" />
+                                        <img src={`${process.env.REACT_APP_API_URL}${product.anhDaiDien}`} alt="" />
                                     </div>
                                     <div id="similar-product" className="carousel slide" data-ride="carousel">
                                         <div className="carousel-inner">
@@ -84,18 +111,23 @@ function ProductDetails() {
                                         <span>
                                             <span> Giá:{FormatCurrency(CaculateDiscountPrice(product.giaBan, product.phanTramGiam))}</span>
 
-                                            <form>
-                                                <input id="txtQuantity" onChange={() => { }} type="number" min="1" value="1" onInput={() => { }} name="quantity" />
+
+                                            <div>
+                                                <input id="txtQuantity" onChange={HandleInputChange} type="number" min="1" value={addToCartQuantity} onInput={() => { }} name="quantity" />
                                                 <button type="submit" className="btn btn-fefault cart">
-                                                    <Link style={{ color: "white" }} onMouseOver={(e) => (e.target.style.color = 'black')}
-                                                        onMouseOut={(e) => (e.target.style.color = 'white')}><i className="fa fa-shopping-cart"></i>Bỏ vào giỏ</Link>
+                                                    <a onClick={() => HandleAddToCart(product.productId, addToCartQuantity)} style={{ color: "white" }} onMouseOver={(e) => (e.target.style.color = 'black')}
+                                                        onMouseOut={(e) => (e.target.style.color = 'white')}><i className="fa fa-shopping-cart"></i>Bỏ vào giỏ</a>
                                                 </button>
-                                            </form>
+                                                {error && <p style={{ color: 'red' }}>{error}</p>}
+                                            </div>
+
 
                                         </span>
+                                        {product.soLuongCon > 0
+                                            ? <p><b>Số lượng còn:</b> {product.soLuongCon}</p>
+                                            : <p><b style={{ color: "red" }}>------------Đã hết hàng-----------</b></p>}
 
-                                        <p><b style={{ color: "red" }}>------------Đã hết hàng-----------</b></p>
-                                        <p><b>Số lượng còn:</b> {product.soLuongCon}</p>
+
                                         <p><b>Mô tả:</b> {product.moTa}</p>
                                         <p><b>Thông số:</b> {product.thongSo}</p>
                                         <p><b>Hãng:</b> {brand}</p>
