@@ -87,4 +87,25 @@ export function QuerryProduct({
         return null;
     })
 }
+export function GetCategoriesFromQuerry({
+    keyword = null,
+    brandId = null,
+    shopId = null,
+    minPrice = null,
+    maxPrice = null }) {
+    return request.get('Products/getCategoriesFromQuerry', {
+        params: {
+            keyword: keyword,
+            brandId: brandId,
+            shopId: shopId,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
 

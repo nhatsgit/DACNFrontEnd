@@ -25,7 +25,6 @@ const routePaths = {
     myorders: '/myorders',
     shop: '/shop',
     orderdetails: '/orderdetails',
-
     checkout: '/checkout',
     // seller
     orders: '/seller/orders',
