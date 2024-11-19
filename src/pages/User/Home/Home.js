@@ -2,6 +2,7 @@ import Slider from "../../../component/User/Slider/Slider";
 import ListProduct from "../../../component/User/Products/ListProduct";
 import * as ProductService from "../../../apiServices/ProductService";
 import { useEffect, useState } from "react";
+import CategoryList from "../../../component/User/CategoryList/CategoryList";
 
 function Home() {
     const [products, setProducts] = useState([]);
@@ -27,7 +28,7 @@ function Home() {
     return (
         <>
             <Slider products={slider} />
-
+            <CategoryList></CategoryList>
             <section>
                 <div className="container">
                     <div className="row">
@@ -36,6 +37,7 @@ function Home() {
                                 <h2 style={{
                                     textTransform: 'capitalize',
                                 }} className="title text-center">Gợi ý hôm nay</h2>
+
                                 <ListProduct listProduct={products} size={12} uiSize={'3'} />
                             </div>
                         </div>

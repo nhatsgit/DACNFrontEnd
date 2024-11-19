@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
 function SellerLayout({ children }) {
     return (
         <>
-            <div><h1>SellerLayout</h1></div>
+            <h1>SellerLayout</h1>
+            <Link to={'/'}>Về trang chủ</Link>
+            <hr></hr>
             {children}
+
         </>
     );
 }

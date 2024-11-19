@@ -1,18 +1,21 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import ListProduct from "../../../component/User/Products/ListProduct";
+import { useLocation } from "react-router-dom";
 import * as ProductService from "../../../apiServices/ProductService";
 import { useEffect, useState } from "react";
+import ListProduct from "../../../component/User/Products/ListProduct";
 import CategoryFilter from "../../../component/User/FilterProduct/CategoryFilter";
 import PriceFilter from "../../../component/User/FilterProduct/PriceFilter";
 
-function Search() {
+function ProductByCategory() {
     const query = new URLSearchParams(useLocation().search);
-    const keyword = query.get('keyword');
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPage, settotalPage] = useState(5)
+    const categoryId = query.get('id');
+    const [category, setCategory] = useState()
     const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [keyword, setKeyword] = useState()
+    const [totalPage, settotalPage] = useState(5)
+
     const [currentFilter, setCurrentFilter] = useState({
+        keyword: null,
         minPrice: 0,
         maxPrice: null,
         categoryId: null
@@ -20,12 +23,12 @@ function Search() {
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const res = await ProductService.QueryProduct({ keyword: keyword, pageSize: 9, pageNumber: currentPage });
-                const categories = await ProductService.GetCategoriesFromQuery({ keyword: keyword });
+                const category = await ProductService.GetCategoryName(categoryId)
+                setCategory(category)
+                const res = await ProductService.QueryProduct({ categoryId: categoryId, pageSize: 9, pageNumber: currentPage });
                 setProducts(res);
                 setCurrentPage(res.pageNumber)
                 settotalPage(res.pageCount)
-                setCategories(categories)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -33,12 +36,12 @@ function Search() {
             }
         }
         fetchApi();
-    }, [keyword]);
+    }, [categoryId]);
     const HandleSelectPage = async (pageNumber) => {
         try {
-            const res = await ProductService.QueryProduct({ ...currentFilter, keyword: keyword, pageSize: 9, pageNumber: pageNumber });
+            const res = await ProductService.QueryProduct({ ...currentFilter, keyword: keyword, categoryId: categoryId, pageSize: 9, pageNumber: pageNumber });
             window.scrollTo({
-                top: 0,
+                top: 400,
                 behavior: 'smooth',
             });
 
@@ -50,59 +53,77 @@ function Search() {
         } finally {
         }
     }
-    const HandleFilterByCategory = async (categoryId) => {
-        if (categoryId === currentFilter.categoryId) {
-            categoryId = null;
-        }
+
+    const HandleFilterByPrice = async (_minPrice, _maxPrice) => {
         try {
+            const res = await ProductService.QueryProduct({ ...currentFilter, keyword: keyword, categoryId: categoryId, minPrice: _minPrice, maxPrice: _maxPrice, pageSize: 9, pageNumber: 1 });
+            window.scrollTo({
+                top: 400,
+                behavior: 'smooth',
+            });
+
+            setProducts(res)
+            setCurrentPage(res.pageNumber)
+            settotalPage(res.pageCount)
+            setCurrentFilter({ ...currentFilter, minPrice: _minPrice, maxPrice: _maxPrice })
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+        }
+    }
+    const HandleFilterByKeyword = async () => {
+        try {
+            console.log(keyword)
             const res = await ProductService.QueryProduct({ ...currentFilter, keyword: keyword, categoryId: categoryId, pageSize: 9, pageNumber: 1 });
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
             });
-            setProducts(res)
-            setCurrentPage(res.pageNumber)
-            settotalPage(res.pageCount)
-            setCurrentFilter({ ...currentFilter, categoryId })
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-        }
-    }
-    const HandleFilterByPrice = async (_minPrice, _maxPrice) => {
-        try {
-            const res = await ProductService.QueryProduct({ ...currentFilter, keyword: keyword, minPrice: _minPrice, maxPrice: _maxPrice, pageSize: 9, pageNumber: 1 });
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
 
             setProducts(res)
             setCurrentPage(res.pageNumber)
             settotalPage(res.pageCount)
-            setCurrentFilter({ ...currentFilter, _minPrice, _maxPrice })
+            setCurrentFilter({ ...currentFilter, keyword })
 
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
         }
     }
-    if (!products) {
-        return <h2 style={{ textTransform: "capitalize" }} className="title text-center">Không tìm thấy kết quả tìm kiếm {keyword}</h2>
-    }
+
     return (
         <>
-            <h2 style={{ textTransform: "capitalize" }} className="title text-center">Kết quả tìm kiếm cho từ khóa `{keyword}`</h2>
             <section>
                 <div className="container">
+                    <h2 style={{ textTransform: "capitalize" }} className="title text-center">Danh mục sản phẩm {category}</h2>
                     <div className="row">
                         <div className="col-sm-3">
                             <div className="left-sidebar">
                                 <form>
+                                    <div className="price-range">
+                                        <div className="well">
+                                            <h2>Tìm kiếm</h2>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input id="keyword"
+                                                            value={keyword} onChange={(e) => { setKeyword(e.target.value) }} style={{ width: "200px" }} placeholder="Tìm sản phẩm" />
+                                                        </td>
 
-                                    <CategoryFilter categories={categories} HandleFilterCallBack={HandleFilterByCategory}></CategoryFilter>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br></br>
+                                            <center><button onClick={() => { HandleFilterByKeyword() }} type="button">Lọc</button></center>
+                                        </div>
+                                    </div>
+
                                     <PriceFilter HandleFilterCallBack={HandleFilterByPrice}></PriceFilter>
+
+
                                     <div className="shipping text-center">
+
                                         <img src="../images/home/shipping.jpg" alt="" />
                                     </div>
                                 </form>
@@ -130,8 +151,9 @@ function Search() {
                     </div>
                 </div>
             </section>
+
         </>
     );
 }
 
-export default Search;
+export default ProductByCategory;

@@ -60,7 +60,19 @@ export function GetBrandName(id) {
         return null;
     })
 }
-export function QuerryProduct({
+export function GetShop(id) {
+    return request.get(`Shops/${id}`, {
+        params: {
+
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function QueryProduct({
     keyword = null,
     categoryId = null,
     brandId = null,
@@ -87,7 +99,7 @@ export function QuerryProduct({
         return null;
     })
 }
-export function GetCategoriesFromQuerry({
+export function GetCategoriesFromQuery({
     keyword = null,
     brandId = null,
     shopId = null,
@@ -100,6 +112,18 @@ export function GetCategoriesFromQuerry({
             shopId: shopId,
             minPrice: minPrice,
             maxPrice: maxPrice,
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function GetCategories() {
+    return request.get(`Categories`, {
+        params: {
+
         }
     }).then((res) => {
         return res.data;

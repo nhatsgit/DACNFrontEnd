@@ -5,6 +5,7 @@ import { FormatCurrency } from "../../../utils/FormatCurrency";
 import { CaculateDiscountPrice } from "../../../utils/CaculateDiscountPrice";
 import { routePaths } from "../../../routes";
 import * as ShopingCartService from "../../../apiServices/ShopingCartService";
+import style from './Product.module.css'
 function ProductDetails() {
     const query = new URLSearchParams(useLocation().search);
     const id = query.get('id');
@@ -12,6 +13,7 @@ function ProductDetails() {
     const [product, setProduct] = useState({})
     const [category, setCategory] = useState(' ')
     const [brand, setBrand] = useState(' ')
+    const [shop, setShop] = useState({})
     const [loading, setLoading] = useState(true);
     const [addToCartQuantity, setAddToCartQuantity] = useState(1);
     const [error, setError] = useState('');
@@ -28,6 +30,10 @@ function ProductDetails() {
                     const brandName = await ProductService.GetBrandName(res.brandId)
                     setBrand(brandName)
                 }
+                if (res.shopId) {
+                    const shop = await ProductService.GetShop(res.shopId)
+                    setShop(shop)
+                }
             } catch (error) {
                 console.error("Error fetching order data:", error);
             } finally {
@@ -37,7 +43,7 @@ function ProductDetails() {
             }
         }
         FetchProduct()
-    }, []);
+    }, [id]);
     const HandleAddToCart = async (productId, quantity) => {
         if (addToCartQuantity === '') {
             setError('Không được để trống');
@@ -136,6 +142,24 @@ function ProductDetails() {
                                     </div>
                                 </div>
                             </div >
+                            <div>
+                                <div className={style.mycontainer} style={{ backgroundImage: `url(${"../myLayout/images/product-details/share.png"})` }}>
+                                    <div className={style.avatar}><img src={`${process.env.REACT_APP_API_URL}${shop.anhDaiDien}`} alt="Avatar"></img></div>
+                                    <div className={style.mycontent}>
+                                        <div className={style.text}>{shop.tenCuaHang}</div>
+                                        <button type="button" className={style.mybutton}>
+                                            <Link
+                                                to={`${routePaths.shop}?id=${shop.shopId}`}
+                                                style={{ color: "white" }}
+                                                onMouseOver={(e) => (e.target.style.color = 'black')}
+                                                onMouseOut={(e) => (e.target.style.color = 'white')}
+                                            >
+                                                Xem Shop
+                                            </Link>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

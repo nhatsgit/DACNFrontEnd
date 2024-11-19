@@ -100,10 +100,10 @@ function MyOrders() {
                                         </div>
                                         <div className="row third py-3" style={{ borderTop: "1px solid grey", width: "99%" }}>
                                             <div className="col-md-6">
-                                                <h4 style={{ color: "red" }}>{order.orderStatus?.tenTrangThai || "Đơn hàng lỗi"}</h4>
+                                                <h4 style={{ color: "blue" }}>{order.orderStatus?.tenTrangThai || "Đơn hàng lỗi"}</h4>
                                             </div>
                                             <div className="col-md-6 text-right">
-                                                <h3 style={{ color: "red" }}>
+                                                <h3 style={{ color: "blue" }}>
                                                     <span>Thành tiền:</span>{FormatCurrency(order.totalPrice)}
                                                 </h3>
 
