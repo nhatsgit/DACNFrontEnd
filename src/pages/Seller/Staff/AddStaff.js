@@ -39,7 +39,7 @@ function AddStaff() {
         </div>
     
         <button type="submit" className={`${styles.btn} ${styles.btn_primary}`}>Register</button>
-    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8PK6azw9Ww9JrPlpzOopvAVTtNPjiY1ZFGge6Zq6rzOaqyRPdXQmrjztsvu-TitKsUkhSyYRFNFBAIr-3WAZa3m0mhfoyPOSaq4gZ938S-96o2VMqaU9ZrdE4PvGtDXTzCsP9JIfKWuZeGHEPvGPhQSdQc59gVbwgSd9ytrWTBBDjfFFJXFnow9pZXnItGAlDQ" />
+    <input name="__RequestVerificationToken" type="hidden" value="" />
     
     </form>
         </div>

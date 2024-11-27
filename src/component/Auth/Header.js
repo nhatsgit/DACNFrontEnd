@@ -56,10 +56,10 @@ function Header() {
 
                         <ul className="nav navbar-nav collapse navbar-collapse">
                             <li className="nav-item">
-                                <a href='/' className="nav-link text-dark" id="register" >Đăng Ký</a>
+                                <a href='/register' className="nav-link text-dark" id="register" >Đăng Ký</a>
                             </li>
                             <li className="nav-item">
-                                <a href='/' className="nav-link text-dark" id="login" > Đăng Nhập</a>
+                                <a href='/login' className="nav-link text-dark" id="login" > Đăng Nhập</a>
                             </li>
 
                         </ul>

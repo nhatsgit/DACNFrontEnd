@@ -1,4 +1,3 @@
-
 /*************************
 *******All Staff CSS******
 **************************/
@@ -161,6 +160,9 @@ tbody, td, tfoot,th, thead, tr {
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
+.display{
+    display: flex;
+}
 .pagination {
     display: flex;
     padding-left: 0;
@@ -305,12 +307,14 @@ label {
         max-width: 1320px;
     }
 }
-button, input, optgroup, select, textarea {
+/* button, input, optgroup, select, textarea {
     margin: 0;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-}
+    width: 100px;
+    height: 50px;
+} */
 /*************************
 *******ALL file Orders CSS******
 **************************/
@@ -326,7 +330,7 @@ button, input, optgroup, select, textarea {
     width: 80%;
     margin: 0 auto;
     padding: 1rem;
-    border: 1px solid #333;
+    /* border: 1px solid #333; */
 }
 .images{width: 50px;height: 50px;}
 .product {

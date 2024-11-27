@@ -17,7 +17,7 @@ function HeaderSeller() {
                         <ul className={styles.navbarNav}>
                             <div className={styles.overlay}></div>
                             <div className={styles.rectangle}>
-                                <img className={styles.circle} src="http://localhost:5120/images/device%20(247).png" alt="Avatar" />
+                            <img className={styles.circle} src="https://th.bing.com/th/id/R.c8361eb4037187a7ebe45174abb619ef?rik=RdGJCA9xoakdxw&pid=ImgRaw&r=0" alt="Avatar" />   {/*http://localhost:5120/images/device%20(247).png */}
                             </div>
                             <div className={styles.content}>
                                 <h4>Shop: joUSkNCprH1</h4>
