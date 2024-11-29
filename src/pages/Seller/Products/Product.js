@@ -1,119 +1,95 @@
+import { useEffect, useState } from "react";
 import styles from "../Seller.module.css"
+import { QueryProductCurrentShop } from "../../../apiServices/Seller/ProductSellerServices";
+import ProductListSeller from "../../../component/Seller/Product/ProductListSeller";
 
 function Products() {
-  return (
-    <div class={styles.main_content}>
-            
+    const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [keyword, setKeyword] = useState('')
+    const [totalPage, settotalPage] = useState(5)
+    const [currentFilter, setCurrentFilter] = useState({
+        keyword: null,
+        daAn: false,
+        daHet: false,
+    });
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const res = await QueryProductCurrentShop({ ...currentFilter, pageSize: 5, pageNumber: currentPage });
+                setProducts(res.items);
+                setCurrentPage(res.pageNumber)
+                settotalPage(res.pageCount)
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+            finally {
+            }
+        }
+        fetchApi();
+    }, []);
+    const HandleSelectPage = async (pageNumber) => {
+        try {
+            const res = await QueryProductCurrentShop({ ...currentFilter, pageSize: 5, pageNumber: pageNumber });
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
 
-    <h1>Tất cả sản phẩm</h1>
+            setProducts(res.items)
+            setCurrentPage(res.pageNumber)
+            settotalPage(res.pageCount)
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+        }
+    }
+    const HandleSearchProduct = async () => {
+        try {
+            const res = await QueryProductCurrentShop({ ...currentFilter, keyword: keyword, pageSize: 5, pageNumber: 1 });
+            setProducts(res.items);
+            setCurrentPage(res.pageNumber)
+            settotalPage(res.pageCount)
+            setCurrentFilter({ ...currentFilter, keyword })
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+        finally {
+        }
+    }
+    return (
+        <div className={styles.main_content}>
 
-    <div class="col-sm-8">
-    <form id={styles.search_form} method="post" class="dropdown" action="/Seller/Products/SearchProducts">
-        <input type="text" name="query" id="searchInput" style={{width: "400px",height:"50px"}} placeholder="Tìm kiếm sản phẩm..." />
-        <ul id={styles.suggestions}></ul>
-        <button style={{width: "100px", height: "55px", backgroundColor: "cornflowerblue", color: "white", border: "none"}} type="submit" value="search" onmouseover="this.style.color='black'" onmouseout="this.style.color='white'">Tìm Kiếm</button>
-    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8PK6azw9Ww9JrPlpzOopvAVT9N5d5rIw4BI0Jv2Mp1ilQ6Fe3Dxaxj_ZtaXT82sA6-Eo4fC7tE5B-pY5P70MgLy_IyAdWbmz66hDF94zSzgau_lNDPj_epPWczxhgWEnMmk54Y8UqkWJbPvyI5rB0GGbRhI3Gu3ezNGbgGVNUd8a5gul4oytTj5nD7ixP1aSiw" /></form>
-    </div>
 
-    <table class={styles.table}>
-    <thead>
-        <tr>
-            <th>
-                TenSp
-            </th>
-            <th>
-                AnhDaiDien
-            </th>           
-            <th>
-                GiaNhap
-            </th>
-            <th>
-                GiaBan
-            </th>
-            <th>
-                SoLuongCon
-            </th>
-            <th>
-                PhanTramGiam
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-        <tbody>
-                <tr>
-                    <td className={styles.tbody_td}>
-                        FSczTpDClI227
-                    </td>
-                    <td className={styles.tbody_td}>
-                        <img src="https://i5.walmartimages.com/asr/d92cca6d-cb6d-4e4c-b5c0-70d5b39ecdf8.43fbe65bc7884354b2c58c12beea36c8.jpeg" width={100} />
-                    </td>
-                    <td className={styles.tbody_td}>
-                        37.000.000 ₫
+            <h1>Danh sách sản phẩm đang bán của Shop</h1>
 
-                    </td>
-                    <td className={styles.tbody_td}>
-                        4.200.000 ₫
-                    </td>
-                    <td className={styles.tbody_td}>
-                        300
-                    </td>
-                    <td className={styles.tbody_td}>
-                        14
-                    </td>
-                    <td className={styles.tbody_td}>
-                        <button className={`${styles.btn} ${styles.btn_danger}`} type="button">
-                            <a style={{color:"white", textDecoration: "underline"}} href="/Seller/Products/DeleteProduct/227">Ẩn</a>
-                        </button>
-                        <button className={`${styles.btn} ${styles.btn_primary}`} type="button" >
-                            <a style={{color:"white", textDecoration: "underline"}} href="/Seller/Products/EditProduct/227">Chỉnh Sửa</a>
-                        </button>
-                        <button className={`${styles.btn} ${styles.btn_info}`}  type="button">
-                            <a style={{ color: "white", textDecoration: "underline" }} href="/Seller/Products/Details/227">Chi Tiết</a>
-                        </button>
-                        
-                    </td>
-                </tr>
-                <tr>
-                    <td className={styles.tbody_td}>
-                        FSczTpDClI227
-                    </td>
-                    <td className={styles.tbody_td}>
-                        <img src="https://i5.walmartimages.com/asr/d92cca6d-cb6d-4e4c-b5c0-70d5b39ecdf8.43fbe65bc7884354b2c58c12beea36c8.jpeg" width={100} />
-                    </td>
-                    <td className={styles.tbody_td}>
-                        37.000.000 ₫
+            <div className="col-sm-8">
+                <div className={styles.search_form}>
+                    <input type="text" id="searchInput" value={keyword} onChange={(e) => setKeyword(e.target.value)} style={{ width: "400px", height: "50px" }} placeholder="Tìm kiếm sản phẩm..." />
+                    <button onClick={HandleSearchProduct} style={{ width: "100px", height: "50px", backgroundColor: "blue", color: "white", border: "none" }}  >Tìm Kiếm</button>
+                </div>
+            </div>
 
-                    </td>
-                    <td className={styles.tbody_td}>
-                        4.200.000 ₫
-                    </td>
-                    <td className={styles.tbody_td}>
-                        300
-                    </td>
-                    <td className={styles.tbody_td}>
-                        14
-                    </td>
-                    <td className={styles.tbody_td}>
-                        <button className={`${styles.btn} ${styles.btn_danger}`} type="button">
-                            <a style={{color:"white", textDecoration: "underline"}} href="/Seller/Products/DeleteProduct/227">Ẩn</a>
-                        </button>
-                        <button className={`${styles.btn} ${styles.btn_primary}`} type="button" >
-                            <a style={{color:"white", textDecoration: "underline"}} href="/Seller/Products/EditProduct/227">Chỉnh Sửa</a>
-                        </button>
-                        <button className={`${styles.btn} ${styles.btn_info}`}  type="button">
-                            <a style={{ color: "white", textDecoration: "underline" }} href="/Seller/Products/Details/227">Chi Tiết</a>
-                        </button>
-                        
-                    </td>
-                </tr>
-        </tbody>
-    </table>
-    <div align="center">
-        <div class="pagination_container"><ul class={styles.pagination}><li class="active"><span>1</span></li><li><a href="/Seller/Products?page=2">2</a></li><li><a href="/Seller/Products?page=3">3</a></li><li><a href="/Seller/Products?page=4">4</a></li><li><a href="/Seller/Products?page=5">5</a></li><li><a href="/Seller/Products?page=6">6</a></li><li class="PagedList_skipToNext"><a href="/Seller/Products?page=2" rel="next">&gt;</a></li></ul></div>
+            {products ?
 
-    </div>
-</div>
- );
+                <>
+                    <ProductListSeller listProduct={products}></ProductListSeller>
+                    <hr />
+                    <center>
+                        <ul className="pagination">
+                            {Array.from({ length: totalPage }, (_, index) => (
+                                <li key={index} className={index === currentPage - 1 ? "active" : ""} onClick={() => HandleSelectPage(index + 1)}>
+                                    <a className="page-link">{index + 1}</a>
+                                </li>
+                            ))}
+                        </ul>
+
+                    </center>
+                </>
+                : <><h1>Không có sản phẩm cần tìm</h1></>
+            }
+        </div>
+    );
 }
 
 export default Products;

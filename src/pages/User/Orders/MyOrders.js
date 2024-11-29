@@ -4,6 +4,7 @@ import { FormatCurrency } from "../../../utils/FormatCurrency";
 import styles from './Orders.module.css'
 import { useNavigate } from "react-router-dom";
 import { routePaths } from "../../../routes";
+import { formatDate } from "../../../utils/FormatDate";
 function MyOrders() {
     const [orders, setOrders] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
@@ -73,7 +74,7 @@ function MyOrders() {
                                 orders.map((order, index) => {
                                     return <div className="container sum" style={{ border: "2px solid black" }} key={index}>
                                         <div className="second p-3">
-                                            <strong>Ngày đặt: {order.orderDate}</strong>
+                                            <strong>Ngày đặt: {formatDate(order.orderDate)}</strong>
                                             {order.orderDetails.map((orderDetail, index) => {
                                                 return <div className={`row product py-2 ${styles.orderDetail}`} key={index}>
                                                     <div className="col-md-6 d-flex">

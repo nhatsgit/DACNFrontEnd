@@ -22,10 +22,18 @@ request.interceptors.request.use(
 request.interceptors.response.use(
     response => response,
     (error) => {
-        if (error.response && error.response.status === 401) {
-            sessionStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
-            localStorage.removeItem('ACCESS_TOKEN');
-            window.location.href = '/login';
+        if (error.response) {
+            // Xử lý lỗi 401 (Unauthorized)
+            if (error.response.status === 401) {
+                sessionStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
+                localStorage.removeItem('ACCESS_TOKEN');
+                window.location.href = '/login';
+            }
+
+            // Xử lý lỗi 403 (Forbidden)
+            if (error.response.status === 403) {
+                window.location.href = '/notfound'; // Điều hướng tới trang Not Found
+            }
         }
         return Promise.reject(error);
     }

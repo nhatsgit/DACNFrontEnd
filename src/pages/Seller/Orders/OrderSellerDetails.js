@@ -1,35 +1,43 @@
 import { useEffect, useState } from "react";
-import * as OrderService from "../../../apiServices/OrderService";
 import { FormatCurrency } from "../../../utils/FormatCurrency";
 import { useLocation } from "react-router-dom";
 import { formatDate } from "../../../utils/FormatDate";
+import { GetOrderById } from "../../../apiServices/OrderService";
+import { GetOrderSellerById, UpdateStatus } from "../../../apiServices/Seller/OrderSellerServices";
 
-function OrderDetails() {
+function OrderSellerDetails() {
     const query = new URLSearchParams(useLocation().search);
     const id = query.get('id');
     const [order, setOrder] = useState(null); // Chờ dữ liệu có từ API
     const [loading, setLoading] = useState(true);
-
+    const fetchApi = async () => {
+        try {
+            const orderRes = await GetOrderSellerById(id);
+            setOrder(orderRes);
+        } catch (error) {
+            console.error("Error fetching order data:", error);
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        }
+    };
     useEffect(() => {
-        const fetchApi = async () => {
-            try {
-                const orderRes = await OrderService.GetOrderById(id);
-                setOrder(orderRes);
-            } catch (error) {
-                console.error("Error fetching order data:", error);
-            } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 500);
-            }
-        };
         fetchApi();
     }, []);
 
     if (loading) {
         return <div>Đang cập nhật dữ liệu...</div>;
     }
-
+    const HandleUpdateStatus = async () => {
+        try {
+            const orderRes = await UpdateStatus(id);
+        } catch (error) {
+            console.error("Error fetching order data:", error);
+        } finally {
+            fetchApi();
+        }
+    };
     return (
         <>
             <section id="cart_items">
@@ -39,6 +47,17 @@ function OrderDetails() {
                             <h1>Thông tin đơn hàng</h1>
                         </ol>
                     </div>
+                    <p>
+                        {order.orderStatus?.tenTrangThai || 'Lỗi...'}
+                        {order.orderStatus?.orderStatusId < 5 ? (
+                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                        ) : order.orderStatus?.orderStatusId === 9 ? (
+                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                        ) : order.orderStatus?.orderStatusId === 10 ? (
+                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                        ) : null}
+
+                    </p>
                     <div className="table-responsive cart_info">
                         <table className="table table-condensed">
                             <thead>
@@ -55,7 +74,7 @@ function OrderDetails() {
                                 {order.orderDetails.map((orderDetail, index) => {
                                     return <tr key={index}>
                                         <td className="cart_product" style={{ width: "200px" }}>
-                                            <a ><img src={`https://localhost:7233${orderDetail.product.anhDaiDien}`} alt="" width="120" height="100" /></a>
+                                            <a ><img src={`https://localhost:7233${orderDetail.product.anhDaiDien}`} alt="" width="60" height="50" /></a>
                                         </td>
                                         <td className="cart_description">
                                             <h4><a >{orderDetail.product.tenSp}</a></h4>
@@ -70,30 +89,7 @@ function OrderDetails() {
                                         <td className="cart_total" id="cartTotal">
                                             <p className="cart_total_price" id="totalPrice">{FormatCurrency(orderDetail.price * orderDetail.quantity)}</p>
                                         </td>
-                                        <td>
 
-                                            {order.orderStatus.orderStatusId >= 5 ?
-                                                <>
-                                                    {orderDetail.isReview != true ?
-                                                        <button onClick={() => { }} id="openModalBtn" type="button" className="btn btn-fefault cart">
-                                                            Đánh Giá
-                                                        </button>
-                                                        : null}
-
-                                                    <button type="button" className="btn btn-fefault cart">
-                                                        <a
-                                                            style={{ color: "white" }}
-                                                            onMouseOver={(e) => (e.currentTarget.style.color = "black")}
-                                                            onMouseOut={(e) => (e.currentTarget.style.color = "white")}
-                                                        >Mua Lại</a>
-                                                    </button>
-                                                </>
-
-                                                : null}
-
-
-
-                                        </td>
 
                                     </tr>
                                 })}
@@ -168,13 +164,6 @@ function OrderDetails() {
                             </dd>
                         </dl>
 
-                        <form method="post">
-                            <input type="submit" value="Hủy Đơn" onClick={() => { }} className="btn btn-danger" />
-                        </form>
-
-                        <form method="post">
-                            <input type="submit" value="Yêu cầu trả hàng" onClick={() => { }} className="btn btn-danger" />
-                        </form>
 
                     </div>
                 </div>
@@ -184,4 +173,4 @@ function OrderDetails() {
     );
 }
 
-export default OrderDetails;
+export default OrderSellerDetails;

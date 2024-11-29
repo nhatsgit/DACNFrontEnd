@@ -36,6 +36,18 @@ export function GetProductById(id) {
         return null;
     })
 }
+export function GetProductImagesById(id) {
+    return request.get(`Products/productImage/${id}`, {
+        params: {
+
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
 export function GetCategoryName(id) {
     return request.get(`Categories/${id}`, {
         params: {
@@ -122,6 +134,18 @@ export function GetCategoriesFromQuery({
 }
 export function GetCategories() {
     return request.get(`Categories`, {
+        params: {
+
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function GetBrands() {
+    return request.get(`Brands`, {
         params: {
 
         }

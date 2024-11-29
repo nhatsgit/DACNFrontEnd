@@ -96,7 +96,7 @@ function Header() {
                                                 <Link to="/login" className="nav-link text-dark" id="login" > Đăng Nhập</Link>
                                             </li>
                                             <li className="nav-item">
-                                                <Link to="/login" className="nav-link text-dark" id="register" > Đăng Ký</Link>
+                                                <Link to="/register" className="nav-link text-dark" id="register" > Đăng Ký</Link>
                                             </li>
                                         </>
                                 }
