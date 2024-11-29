@@ -11,6 +11,7 @@ function ProductDetails() {
     const id = query.get('id');
     const navigate = useNavigate();
     const [product, setProduct] = useState({})
+    const [productImages, setProductImages] = useState([])
     const [category, setCategory] = useState(' ')
     const [brand, setBrand] = useState(' ')
     const [shop, setShop] = useState({})
@@ -18,9 +19,18 @@ function ProductDetails() {
     const [addToCartQuantity, setAddToCartQuantity] = useState(1);
     const [error, setError] = useState('');
     useEffect(() => {
+        const groupImages = (images) => {
+            const groups = [];
+            for (let i = 0; i < images.length; i += 3) {
+                groups.push(images.slice(i, i + 3));
+            }
+            return groups;
+        };
         const FetchProduct = async () => {
             try {
                 const res = await ProductService.GetProductById(id)
+                const listImage = await ProductService.GetProductImagesById(id)
+                setProductImages(groupImages(listImage));
                 setProduct(res);
                 if (res.productCategoryId) {
                     const categoryName = await ProductService.GetCategoryName(res.productCategoryId)
@@ -69,6 +79,8 @@ function ProductDetails() {
     if (loading) {
         return <div>Đang cập nhật dữ liệu...</div>;
     }
+
+
     return (
         <>
             <section>
@@ -82,22 +94,20 @@ function ProductDetails() {
                                     </div>
                                     <div id="similar-product" className="carousel slide" data-ride="carousel">
                                         <div className="carousel-inner">
-                                            <div className="item active">
-                                                <a href=""><img src="images/product-details/similar2.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar3.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar2.jpg" width={125} height={125} alt="" /></a>
-                                            </div>
-                                            <div className="item">
-                                                <a href=""><img src="images/product-details/similar3.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar1.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar3.jpg" width={125} height={125} alt="" /></a>
-                                            </div>
-                                            <div className="item">
-                                                <a href=""><img src="images/product-details/similar2.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar1.jpg" width={125} height={125} alt="" /></a>
-                                                <a href=""><img src="images/product-details/similar2.jpg" width={125} height={125} alt="" /></a>
-                                            </div>
-
+                                            {productImages.map((group, index) => (
+                                                <div className={`item ${index === 0 ? "active" : ""}`} key={index}>
+                                                    {group.map((image) => (
+                                                        <a href="#" key={image.productImageId}>
+                                                            <img
+                                                                src={`${process.env.REACT_APP_API_URL}${image.url}`}
+                                                                width={125}
+                                                                height={125}
+                                                                alt={`Product ${image.productId}`}
+                                                            />
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            ))}
                                         </div>
 
                                         <a className="left item-control" style={{ left: 0 }} href="#similar-product" data-slide="prev">

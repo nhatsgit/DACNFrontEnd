@@ -7,7 +7,7 @@ import { routePaths } from "../../routes";
 function SellerLayout({ children }) {
     return (
         <>
-            <HeaderSeller/>
+            <HeaderSeller />
 
             <div className={styles.mainContent}>
                 <div className={styles.leftNavbar}>
@@ -22,7 +22,7 @@ function SellerLayout({ children }) {
                         </li>
                         <li className={styles.navSection}>Quản lý đơn hàng
                             <ul className={styles.subNavLinks}>
-                                <li><Link to={`${routePaths.products}`}>Tất cả</Link></li>
+                                <li><Link to={`${routePaths.orders}`}>Tất cả</Link></li>
                                 <li><Link to={`${routePaths.pending}`}>Chờ xác nhận</Link></li>
                                 <li><Link to={`${routePaths.delivered}`}>Đã giao hàng</Link></li>
                                 <li><Link to={`${routePaths.cancalled}`}>Đơn hủy</Link></li>
@@ -40,7 +40,7 @@ function SellerLayout({ children }) {
                         </li> */}
                         <li className={styles.navSection}>Quản lý Shop
                             <ul className={styles.subNavLinks}>
-                                <li><Link to={`${routePaths.staff}`}>Thông tin shop</Link></li>
+                                <li><Link to={`${routePaths.myShopDetails}`}>Thông tin shop</Link></li>
                                 <li><Link to={`${routePaths.staff}`}>Nhân viên</Link></li>
                                 <li><Link to={`${routePaths.addstaff}`}>Thêm nhân viên</Link></li>
                             </ul>
