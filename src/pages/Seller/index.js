@@ -18,3 +18,13 @@ export { default as SoldOutProduct } from './Products/SoldOutProduct';
 // Export từ thư mục Staff
 export { default as AddStaff } from './Staff/AddStaff';
 export { default as Staff } from './Staff/Staff';
+
+// Export từ thư mục Staff
+export { default as ProductAnalyze } from './Analyze/ProductAnalyze';
+export { default as RenueAnalyze } from './Analyze/RenueAnalyze';
+
+// Export từ thư mục Staff
+export { default as Voucher } from './Voucher/Voucher';
+export { default as VoucherCreater } from './Voucher/VoucherCreater';
+export { default as VoucherExpired } from './Voucher/VoucherExpired';
+export { default as VoucherUnmount } from './Voucher/VoucherUnmount';

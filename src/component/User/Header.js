@@ -69,7 +69,7 @@ function Header() {
                                 <li><Link to={routePaths.home}  ><i className="fa fa-home"></i>Trang Chủ</Link></li>
                                 <li><Link to={routePaths.myorders}  ><i className="fa fa-list-alt"></i>Đơn Hàng</Link></li>
                                 <li><Link to={routePaths.mycarts}  ><i className="fa fa-shopping-cart" ></i> Giỏ Hàng</Link></li>
-                                <li><Link to={routePaths.home} ><i className="fa fa-user"></i> Tài Khoản</Link></li>
+                                <li><Link to={routePaths.account} ><i className="fa fa-user"></i> Tài Khoản</Link></li>
                             </ul>
 
                         </div>
