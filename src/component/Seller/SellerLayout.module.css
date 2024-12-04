@@ -76,9 +76,8 @@ body {
 
 .rectangle {
     position: relative;
-    width: 90px;
-    height: 80px;
-    background-image: url('https://png.pngtree.com/png-vector/20241109/ourmid/pngtree-high-resolution-flat-screen-tv-display-png-image_14302717.png');
+    width: 70px;
+    height: 70px;
     background-size: cover;
     background-position: center;
     border-radius: 8px;
@@ -121,9 +120,8 @@ a:hover {
 }
 
 .leftNavbar {
-    position: -webkit-sticky; /* Dành cho các trình duyệt cũ như Safari */
-    position: sticky;
-    top: 0; /* Thanh navbar sẽ "dính" khi cuộn đến 80px từ trên xuống */
+    position: -webkit-sticky; 
+    top: 0; 
     left: 0;
     background-color: #f8f9fa;
     width: 220px;
@@ -164,7 +162,6 @@ a:hover {
 }
 
 .childrenContent {
-    /* margin-left: 240px;  */
     flex-grow: 1;
     padding: 20px;
 }

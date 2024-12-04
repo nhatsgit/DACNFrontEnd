@@ -1,69 +1,150 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import { GetShopDetail } from "../../../apiServices/Seller/ShopServices";
 
 function ShopDetail() {
     const [shopData, setShopData] = useState({});
+    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [backgroundPreview, setBackgroundPreview] = useState(null);
+
     useEffect(() => {
         const fetchApi = async () => {
             try {
                 const shop = await GetShopDetail();
-                setShopData(shop)
-
+                setShopData(shop);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
-            finally {
-
-            }
-        }
+        };
         fetchApi();
     }, []);
+
     if (!shopData) {
         return <div>Đang tải thông tin cửa hàng...</div>;
     }
 
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarPreview(reader.result); // Set preview of avatar image
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // Handle file change for background image
+    const handleBackgroundChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setBackgroundPreview(reader.result); // Set preview of background image
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+        const options = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
         return date.toLocaleDateString("vi-VN", options);
     };
 
     return (
-        <div style={{ maxWidth: "800px", margin: "20px auto", padding: "20px", border: "1px solid #ddd", borderRadius: "8px", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)" }}>
-            {/* Ảnh bìa */}
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <img
-                    src={`${process.env.REACT_APP_API_URL}${shopData.anhBia}`}
-                    alt="Ảnh bìa cửa hàng"
-                    style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
-                />
-            </div>
-
-            {/* Ảnh đại diện */}
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <img
-                    src={`${process.env.REACT_APP_API_URL}${shopData.anhDaiDien}`}
-                    alt="Ảnh đại diện cửa hàng"
-                    style={{ width: "150px", height: "150px", borderRadius: "50%", objectFit: "cover", border: "4px solid #fff", boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)" }}
-                />
-            </div>
-
-            {/* Thông tin shop */}
-            <h2 style={{ textAlign: "center", color: "#333", marginBottom: "10px" }}>{shopData.tenCuaHang}</h2>
-            <p style={{ textAlign: "center", color: "#666", marginBottom: "20px" }}>
-                <em>Mô tả: {shopData.moTa}</em>
-            </p>
-
-            <div style={{ lineHeight: "1.8", color: "#555" }}>
-                <p><strong>Địa chỉ:</strong> {shopData.diaChi}</p>
-                <p><strong>Liên hệ:</strong> {shopData.lienHe}</p>
-                <p><strong>Ngày tạo:</strong> {formatDate(shopData.ngayTao)}</p>
-                <p><strong>Danh mục cửa hàng:</strong> {shopData.shopCategoryId}</p>
-                <p><strong>Trạng thái:</strong> {shopData.biChan ? "Đã bị chặn" : "Hoạt động bình thường"}</p>
-            </div>
+        <div style={{ maxWidth: "800px", margin: "20px auto", padding: "20px" }}>
+            <h1 align="center">Thiết lập thông tin cửa hàng</h1>
+            <form encType="multipart/form-data">
+                <div className="row justify-content-center">
+                    <div className="col-md-4">
+                        <div className="form-group">
+                            <label className="control-label"><strong>Tên Cửa Hàng</strong></label>
+                            <input name="TenCuaHang" defaultValue={shopData.tenCuaHang} className="form-control" />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label"><strong>Địa chỉ</strong></label>
+                            <input className="form-control" name="address" id="address" type="text" defaultValue={shopData.diaChi} />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label"><strong>Liên Hệ</strong></label>
+                            <input name="LienHe" defaultValue={shopData.lienHe} className="form-control" />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label"><strong>Mô Tả Shop</strong></label>
+                            <textarea name="MoTa" defaultValue={shopData.moTa} className="form-control" />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label"><strong>Loại Shop</strong></label>
+                            <select name="ShopCategoryId" className="form-control" defaultValue={shopData.ShopCategoryId}>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label"><strong>Ngày Tạo</strong></label>
+                            <p className="form-control-static">{formatDate(shopData.ngayTao)}</p>
+                        </div>
+                    </div>
+                    <div className="col-md-4 text-center">
+                    <div className="form-group" align="center">
+                            <label><strong>Ảnh Đại Diện</strong></label>
+                            <input 
+                                type="file" 
+                                name="imageAvatar" 
+                                className="form-control" 
+                                id="imageAvatar" 
+                                style={{ display: "none" }} 
+                                onChange={handleAvatarChange} 
+                            />
+                            <img 
+                                src={avatarPreview || `${process.env.REACT_APP_API_URL}${shopData.anhDaiDien}`} 
+                                alt="Avatar" 
+                                style={{ width: "100px", height: "100px", borderRadius: "50%" }} 
+                            />
+                            <button 
+                                type="button" 
+                                onClick={() => document.getElementById("imageAvatar").click()} 
+                                className="btn btn-secondary"
+                            >
+                                Chọn Ảnh Đại Diện
+                            </button>
+                        </div>
+                        <div className="form-group" align="center">
+                            <label><strong>Ảnh Bìa</strong></label>
+                            <input 
+                                type="file" 
+                                name="imageBackground" 
+                                className="form-control" 
+                                id="imageBackground" 
+                                style={{ display: "none" }} 
+                                onChange={handleBackgroundChange} 
+                            />
+                            <img 
+                                src={backgroundPreview || `${process.env.REACT_APP_API_URL}${shopData.anhBia}`} 
+                                alt="Background" 
+                                style={{ height: "200px" }} 
+                            />
+                            <button 
+                                type="button" 
+                                onClick={() => document.getElementById("imageBackground").click()} 
+                                className="btn btn-secondary"
+                            >
+                                Chọn Ảnh Bìa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group" align="center">
+                    <input type="submit" value="Lưu" className="btn btn-primary" />
+                </div>
+            </form>
         </div>
     );
 }
-
 
 export default ShopDetail;
