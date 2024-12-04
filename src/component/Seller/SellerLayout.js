@@ -8,7 +8,7 @@ import { useState } from "react";
 
 function SellerLayout({ children }) {
     const [openDropdowns, setOpenDropdowns] = useState({
-        products: true,
+        product: true,
         orders: true,
         vouchers: true,
         staff: true,
@@ -29,8 +29,8 @@ function SellerLayout({ children }) {
             <div className={styles.mainContent}>
                 <div className={styles.leftNavbar}>
                     <ul className={styles.leftNavLinks}>
-                        <li className={styles.navSection}><h4 onClick={() => toggleDropdown('products')}> <i className="fa fa-inbox"></i> Quản lý sản phẩm{' '} <i className={`fa-solid ${openDropdowns['products'] ? 'fa-caret-up' : 'fa-caret-down'}`}></i></h4>
-                        {openDropdowns['products'] && (
+                        <li className={styles.navSection}><h4 onClick={() => toggleDropdown('product')}> <i className="fa fa-inbox"></i> Quản lý sản phẩm{' '} <i className={`fa-solid ${openDropdowns['products'] ? 'fa-caret-up' : 'fa-caret-down'}`}></i></h4>
+                        {openDropdowns['product'] && (
                             <ul className={styles.subNavLinks}>
                                 <li><Link to={`${routePaths.products}`}>Sản phẩm đang bán</Link></li>
                                 <li><Link to={`${routePaths.hidden}`}>Sản phẩm đã ẩn</Link></li>

@@ -24,7 +24,8 @@ import AdminLayout from '../component/Admin/AdminLayout';
 import {
     CanceledOrder, DeliveredOrder, OrderNotConfirm, RequestReturnedOrder,
     AddProduct, HiddenProduct, SoldOutProduct, ReturnedOrder,
-    AddStaff,RenueAnalyze, ProductAnalyze,Voucher,VoucherCreater,VoucherExpired,VoucherUnmount
+    AddStaff,RenueAnalyze, ProductAnalyze,Voucher,VoucherCreater,VoucherExpired,VoucherUnmount,
+    DetailProduct, EditProduct
 } from '../pages/Seller/index';
 
 import {CreateStore,DetailStore,
@@ -55,10 +56,12 @@ const routePaths = {
     checkout: '/checkout',
 
     /////// Seller ////////
-    products: '/seller/products',
+    products: '/seller/product',
     hidden: '/seller/hidden',
     out_of_stock: '/seller/out_of_stock',
     add: '/seller/add',
+    detailProduct: '/seller/detailProduct',
+    editProduct: '/seller/editProduct',
     orders: '/seller/orders',
     all: '/seller/orders/all',
     pending: '/seller/orders/pending',
@@ -123,6 +126,8 @@ const publicRoutes = [
     { path: routePaths.hidden, component: HiddenProduct, layout: SellerLayout },
     { path: routePaths.out_of_stock, component: SoldOutProduct, layout: SellerLayout },
     { path: routePaths.add, component: AddProduct, layout: SellerLayout },
+    { path: routePaths.detailProduct, component: DetailProduct, layout: SellerLayout },
+    { path: routePaths.editProduct, component: EditProduct, layout: SellerLayout },
 
     { path: routePaths.orders, component: Orders, layout: SellerLayout },
     { path: routePaths.pending, component: OrderNotConfirm, layout: SellerLayout },

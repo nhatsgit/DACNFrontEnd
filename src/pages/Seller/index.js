@@ -14,6 +14,8 @@ export { default as AddProduct } from './Products/AddProduct';
 export { default as HiddenProduct } from './Products/HiddenProduct';
 export { default as Product } from './Products/Product';
 export { default as SoldOutProduct } from './Products/SoldOutProduct';
+export { default as DetailProduct } from '../Seller/Products/ExtentionProduct/DetailProduct';
+export { default as EditProduct } from '../Seller/Products/ExtentionProduct/EditProduct';
 
 // Export từ thư mục Staff
 export { default as AddStaff } from './Staff/AddStaff';

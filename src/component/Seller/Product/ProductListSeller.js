@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../../pages/Seller/Seller.module.css"
 import { HideProduct } from "../../../apiServices/Seller/ProductSellerServices";
 import { useEffect, useState } from "react";
 import { FormatCurrency } from "../../../utils/FormatCurrency";
+import { routePaths } from "../../../routes";
 
 function ProductListSeller({ listProduct }) {
     const navigate = useNavigate();
@@ -97,10 +98,10 @@ function ProductListSeller({ listProduct }) {
                                             </button>
                                     }
                                     <button className={`${styles.btn} ${styles.btn_primary}`} type="button" >
-                                        <a style={{ color: "white", textDecoration: "underline" }} href="/Seller/Products/EditProduct/227">Chỉnh Sửa</a>
+                                        <Link to={routePaths.editProduct} style={{ color: "white", textDecoration: "underline" }} >Chỉnh Sửa</Link>
                                     </button>
                                     <button className={`${styles.btn} ${styles.btn_info}`} type="button">
-                                        <a style={{ color: "white", textDecoration: "underline" }} href="/Seller/Products/Details/227">Chi Tiết</a>
+                                        <Link to={routePaths.detailProduct} style={{ color: "white", textDecoration: "underline" }} >Chi Tiết</Link>
                                     </button>
 
                                 </td>
