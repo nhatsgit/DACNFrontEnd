@@ -1,7 +1,42 @@
+import { useEffect, useState } from "react";
+import { GetProductCategoryChartData, GetTopRevenueProducts, GetTopSaleProducts } from "../../../apiServices/Seller/AnalyzeServices";
+import { FormatCurrency } from "../../../utils/FormatCurrency";
+import PieChart from "../../../component/Context/Chart/PieChart";
+
 function ProductAnalyze() {
-    return(
+  const [topSaleProducts, setTopSaleProducts] = useState({});
+  const [topRevenueProducts, setTopRevenueProducts] = useState({});
+  const [chartData, setChartData] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const _topSaleProducts = await GetTopSaleProducts();
+        setTopSaleProducts(_topSaleProducts)
+        const _topRevenueProducts = await GetTopRevenueProducts();
+        setTopRevenueProducts(_topRevenueProducts)
+        const _chartData = await GetProductCategoryChartData();
+        setChartData(_chartData)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
+      }
+    }
+    fetchApi();
+  }, []);
+  if (loading) {
+    return <div>Đang cập nhật dữ liệu...</div>;
+  }
+  return (
     <div>
-      <h1> Biểu đồ sản phẩm theo loại</h1> 
+      <h1> Biểu đồ sản phẩm theo loại</h1>
+      {chartData ? <PieChart data={chartData} /> : <></>}
+
       <h1>Top Bán Chạy</h1>
       <table className="table">
         <thead>
@@ -16,25 +51,30 @@ function ProductAnalyze() {
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td>Tensp</td>
-              <td>
-                <img src="" alt="Anhdaidien" width="60" height="60" />
-              </td>
-              <td>
-                <p>SoLuongBan</p>
-              </td>
-              <td>GiaBan</td>
-              <td>PhanTramGiam</td>
-              <td>SoLuongCon</td>
-              <td>DiemDanhGia</td>
-            </tr>
+          {
+            topSaleProducts.map((product, index) => {
+              return <tr key={index}>
+                <td>{product.tenSp}</td>
+                <td>
+                  <img src={`${process.env.REACT_APP_API_URL}${product.anhDaiDien}`} alt="Anhdaidien" width="60" height="60" />
+                </td>
+                <td>
+                  <p style={{ color: "blue" }}>{product.soLuongBan}</p>
+                </td>
+                <td>{FormatCurrency(product.giaBan)}</td>
+                <td>{product.phanTramGiam}</td>
+                <td>{product.soLuongCon}</td>
+                <td>{product.diemDanhGia}</td>
+              </tr>
+            })
+          }
         </tbody>
       </table>
 
       <h1>Top Doanh Thu</h1>
       <table className="table">
         <thead>
+
           <tr>
             <th>Tên</th>
             <th>Ảnh</th>
@@ -46,21 +86,26 @@ function ProductAnalyze() {
           </tr>
         </thead>
         <tbody>
-            <tr >
-              <td>TenSp</td>
-              <td>
-                <img src="" alt="TenSp" width="60" height="60" />
-              </td>
-              <td>
-                <p>
-                  DoanhThu
-                </p>
-              </td>
-              <td>GiaBan</td>
-              <td>PhanTramGiam</td>
-              <td>SoLuongCon</td>
-              <td>DiemDanhGia</td>
-            </tr>
+          {
+            topRevenueProducts.map((product, index) => {
+              return <tr key={index}>
+                <td>{product.tenSp}</td>
+                <td>
+                  <img src={`${process.env.REACT_APP_API_URL}${product.anhDaiDien}`} alt="TenSp" width="60" height="60" />
+                </td>
+                <td>
+                  <p style={{ color: "blue" }}>
+                    {FormatCurrency(product.doanhThu)}
+                  </p>
+                </td>
+                <td>{FormatCurrency(product.giaBan)}</td>
+                <td>{product.phanTramGiam}</td>
+                <td>{product.soLuongCon}</td>
+                <td>{product.diemDanhGia}</td>
+              </tr>
+            })
+          }
+
         </tbody>
       </table>
     </div>

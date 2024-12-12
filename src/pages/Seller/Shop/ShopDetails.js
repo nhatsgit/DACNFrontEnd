@@ -1,17 +1,31 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { GetShopDetail } from "../../../apiServices/Seller/ShopServices";
+import { GetShopCategories, GetShopDetail, UpdateShop } from "../../../apiServices/Seller/ShopServices";
+import { formatDate } from '../../../utils/FormatDate';
+import AddressSelector from '../../../component/Context/Address/AddressSelector';
 
 function ShopDetail() {
     const [shopData, setShopData] = useState({});
+    const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState(null);
+    const [background, setBackground] = useState(null);
     const [backgroundPreview, setBackgroundPreview] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [address, setAddress] = useState("");
+
+
 
     useEffect(() => {
         const fetchApi = async () => {
             try {
                 const shop = await GetShopDetail();
+                const resCategories = await GetShopCategories();
+                setAddress(shop.diaChi)
+                setCategories(resCategories);
                 setShopData(shop);
+                setAvatarPreview(`${process.env.REACT_APP_API_URL}${shop.anhDaiDien}`)
+                setBackgroundPreview(`${process.env.REACT_APP_API_URL}${shop.anhBia}`)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -22,67 +36,99 @@ function ShopDetail() {
     if (!shopData) {
         return <div>Đang tải thông tin cửa hàng...</div>;
     }
-
-    const handleAvatarChange = (event) => {
-        const file = event.target.files[0];
+    const handleInputChange = (e) => {
+        console.log("change")
+        const { name, value } = e.target;
+        setShopData((prevShop) => ({
+            ...prevShop,
+            [name]: value,
+        }));
+    };
+    const handleAddressChange = (address) => {
+        setAddress(address)
+        setShopData((prevShop) => ({
+            ...prevShop,
+            diaChi: address,
+        }));
+    };
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        setAvatar(file);
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAvatarPreview(reader.result); // Set preview of avatar image
-            };
-            reader.readAsDataURL(file);
+            const previewUrl = URL.createObjectURL(file);
+            setAvatarPreview(previewUrl);
         }
     };
 
-    // Handle file change for background image
-    const handleBackgroundChange = (event) => {
-        const file = event.target.files[0];
+    const handleBackgroundChange = (e) => {
+        const file = e.target.files[0];
+        setBackground(file);
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setBackgroundPreview(reader.result); // Set preview of background image
-            };
-            reader.readAsDataURL(file);
+            const previewUrl = URL.createObjectURL(file);
+            setBackgroundPreview(previewUrl);
         }
     };
+    const openPopup = () => {
+        setIsPopupOpen(true);
+    };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const options = {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-        };
-        return date.toLocaleDateString("vi-VN", options);
+    const closePopup = () => {
+        setIsPopupOpen(false);
+    };
+    const HandleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await UpdateShop(shopData, avatar, background);
+            alert("Cập nhật thành công!");
+        } catch (error) {
+            alert("Đã xảy ra lỗi");
+            console.error(error);
+        }
     };
 
     return (
         <div style={{ maxWidth: "800px", margin: "20px auto", padding: "20px" }}>
+
             <h1 align="center">Thiết lập thông tin cửa hàng</h1>
-            <form encType="multipart/form-data">
+
+
+            <form onSubmit={HandleSubmit}>
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <div className="form-group">
                             <label className="control-label"><strong>Tên Cửa Hàng</strong></label>
-                            <input name="TenCuaHang" defaultValue={shopData.tenCuaHang} className="form-control" />
+                            <input name="tenCuaHang" onChange={handleInputChange} value={shopData.tenCuaHang} className="form-control" />
                         </div>
                         <div className="form-group">
                             <label className="control-label"><strong>Địa chỉ</strong></label>
-                            <input className="form-control" name="address" id="address" type="text" defaultValue={shopData.diaChi} />
+                            <textarea className="form-control" style={{ height: "100px" }} name="diaChi" id="address" type="text" value={address} readOnly></textarea>
                         </div>
+                        {isPopupOpen && (
+                            <AddressSelector onClose={closePopup} setAddress={handleAddressChange} ></AddressSelector>
+                        )}
+                        {!isPopupOpen && (
+                            <button type="button" id="btnpopup" onClick={openPopup}>
+                                Chọn địa chỉ khác
+                            </button>
+                        )}
                         <div className="form-group">
                             <label className="control-label"><strong>Liên Hệ</strong></label>
-                            <input name="LienHe" defaultValue={shopData.lienHe} className="form-control" />
+                            <textarea name="lienHe" onChange={handleInputChange} value={shopData.lienHe} className="form-control" />
                         </div>
                         <div className="form-group">
                             <label className="control-label"><strong>Mô Tả Shop</strong></label>
-                            <textarea name="MoTa" defaultValue={shopData.moTa} className="form-control" />
+                            <textarea name="moTa" onChange={handleInputChange} value={shopData.moTa} className="form-control" />
                         </div>
                         <div className="form-group">
                             <label className="control-label"><strong>Loại Shop</strong></label>
-                            <select name="ShopCategoryId" className="form-control" defaultValue={shopData.ShopCategoryId}>
+                            <select name="shopCategoryId" onChange={handleInputChange} value={shopData.shopCategoryId}>
+                                {categories.map((category, index) => {
+                                    return (
+                                        <option key={index} value={category.shopCategoryId}>
+                                            {category.tenLoai}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div className="form-group">
@@ -91,24 +137,24 @@ function ShopDetail() {
                         </div>
                     </div>
                     <div className="col-md-4 text-center">
-                    <div className="form-group" align="center">
-                            <label><strong>Ảnh Đại Diện</strong></label>
-                            <input 
-                                type="file" 
-                                name="imageAvatar" 
-                                className="form-control" 
-                                id="imageAvatar" 
-                                style={{ display: "none" }} 
-                                onChange={handleAvatarChange} 
+                        <div className="form-group" align="center">
+                            <label><strong>Ảnh Đại Diện</strong></label><br></br>
+                            <input
+                                type="file"
+                                name="imageAvatar"
+                                className="form-control"
+                                id="imageAvatar"
+                                style={{ display: "none" }}
+                                onChange={handleAvatarChange}
                             />
-                            <img 
-                                src={avatarPreview || `${process.env.REACT_APP_API_URL}${shopData.anhDaiDien}`} 
-                                alt="Avatar" 
-                                style={{ width: "100px", height: "100px", borderRadius: "50%" }} 
+                            <img
+                                src={avatarPreview || `${process.env.REACT_APP_API_URL}${shopData.anhDaiDien}`}
+                                alt="Avatar"
+                                style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                             />
-                            <button 
-                                type="button" 
-                                onClick={() => document.getElementById("imageAvatar").click()} 
+                            <button
+                                type="button"
+                                onClick={() => document.getElementById("imageAvatar").click()}
                                 className="btn btn-secondary"
                             >
                                 Chọn Ảnh Đại Diện
@@ -116,22 +162,22 @@ function ShopDetail() {
                         </div>
                         <div className="form-group" align="center">
                             <label><strong>Ảnh Bìa</strong></label>
-                            <input 
-                                type="file" 
-                                name="imageBackground" 
-                                className="form-control" 
-                                id="imageBackground" 
-                                style={{ display: "none" }} 
-                                onChange={handleBackgroundChange} 
+                            <input
+                                type="file"
+                                name="imageBackground"
+                                className="form-control"
+                                id="imageBackground"
+                                style={{ display: "none" }}
+                                onChange={handleBackgroundChange}
                             />
-                            <img 
-                                src={backgroundPreview || `${process.env.REACT_APP_API_URL}${shopData.anhBia}`} 
-                                alt="Background" 
-                                style={{ height: "200px" }} 
+                            <img
+                                src={backgroundPreview || `${process.env.REACT_APP_API_URL}${shopData.anhBia}`}
+                                alt="Background"
+                                style={{ height: "200px" }}
                             />
-                            <button 
-                                type="button" 
-                                onClick={() => document.getElementById("imageBackground").click()} 
+                            <button
+                                type="button"
+                                onClick={() => document.getElementById("imageBackground").click()}
                                 className="btn btn-secondary"
                             >
                                 Chọn Ảnh Bìa

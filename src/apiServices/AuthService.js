@@ -10,3 +10,12 @@ export function LoginRequest(userName, password) {
             return null;
         })
 }
+export function GetMyInfo() {
+    return request.get(`Account/me`)
+        .then((res) => {
+            return res.data;
+        }).catch(() => {
+            console.log("error")
+            return null;
+        })
+}

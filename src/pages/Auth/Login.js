@@ -19,7 +19,7 @@ function Login() {
         e.preventDefault();
         if (!userName || !password) {
             notification.error({
-                message: "loi nhap", description: "fail"
+                message: "Vui lòng nhập đúng thông tin!"
             })
         } else {
             const res = await AuthService.LoginRequest(userName, password)
@@ -28,9 +28,8 @@ function Login() {
 
                 localStorage.setItem('ACCESS_TOKEN', res);
                 localStorage.setItem('USER', userName);
-                console.log("login with token :", localStorage.getItem('ACCESS_TOKEN'));
                 notification.success({
-                    message: "dang nhap thanh cong " + userName, description: "success"
+                    message: "Đăng nhập thành công ", description: "Xin chào " + userName
                 })
                 setAuth({
                     isAuthenticated: true,
@@ -40,11 +39,11 @@ function Login() {
                 })
                 const redirectUrl = sessionStorage.getItem('redirectAfterLogin') || '/';
                 sessionStorage.removeItem('redirectAfterLogin');
-                // navigate(redirectUrl);
-                window.location.href = redirectUrl;
+                navigate(redirectUrl);
+                //window.location.href = redirectUrl;
             } else {
                 notification.error({
-                    message: "dang nhap k thanh cong", description: "fail"
+                    message: "Đăng nhập không thành công", description: "Tài khoản hoặc mật khẩu không chính xác"
                 })
             }
         }

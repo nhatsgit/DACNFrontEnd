@@ -157,3 +157,52 @@ export function GetBrands() {
     })
 }
 
+export function AddReviews({ noiDung, diem, productId, orderId, files }) {
+    const formData = new FormData();
+    formData.append('noiDung', noiDung);
+    formData.append('diem', diem);
+    formData.append('productId', productId);
+    formData.append('orderId', orderId);
+    if (files && files.length > 0) {
+        files.forEach((file, index) => {
+            console.log(`File ${index + 1}:`);
+            console.log(`Name: ${file.name}`);
+            console.log(`Type: ${file.type}`);
+            console.log(`Size: ${file.size}`);
+        });
+    }
+    if (files && files.length > 0) {
+        files.forEach((file, index) => {
+            console.log(`Adding file ${index}:`, file.name);
+            formData.append('myFile', file);
+        });
+    }
+    for (const pair of formData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]);
+    }
+
+    return request.post(`Reviews`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+        .then((res) => {
+            return res.data;
+        }).catch(() => {
+            console.log("error")
+            return null;
+        })
+
+}
+export function GetProductReviews(productId) {
+    return request.get(`Reviews/ProductReviews`, {
+        params: {
+            productId
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}

@@ -21,9 +21,9 @@ function AddProduct() {
         ShopId: 0,
     });
     const [mainImage, setMainImage] = useState(null);
-    const [mainImagePreview, setMainImagePreview] = useState(null);
+    const [mainImagePreviewURL, setMainImagePreviewURL] = useState(null);
     const [additionalImages, setAdditionalImages] = useState([]);
-    const [additionalImagePreviews, setAdditionalImagePreviews] = useState([]);
+    const [additionalImagePreviewsURL, setAdditionalImagePreviewsURL] = useState([]);
     const [brands, setBrands] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -74,7 +74,7 @@ function AddProduct() {
         setMainImage(file);
         if (file) {
             const previewUrl = URL.createObjectURL(file);
-            setMainImagePreview(previewUrl);
+            setMainImagePreviewURL(previewUrl);
         }
     };
 
@@ -82,7 +82,7 @@ function AddProduct() {
         const files = Array.from(e.target.files);
         setAdditionalImages(files);
         const previews = files.map((file) => URL.createObjectURL(file));
-        setAdditionalImagePreviews(previews);
+        setAdditionalImagePreviewsURL(previews);
     };
 
     const toggleForm = (e) => {
@@ -251,9 +251,9 @@ function AddProduct() {
                                 id="imageInput"
                             />
                             <br />
-                            {mainImagePreview && (
+                            {mainImagePreviewURL && (
                                 <img
-                                    src={mainImagePreview}
+                                    src={mainImagePreviewURL}
                                     alt="Main Preview"
                                     style={{ width: "200px", marginTop: "10px" }}
                                 />
@@ -269,7 +269,7 @@ function AddProduct() {
                                 multiple
                                 accept="image/*"
                             />
-                            {additionalImagePreviews.map((preview, index) => (
+                            {additionalImagePreviewsURL.map((preview, index) => (
                                 <img
                                     key={index}
                                     src={preview}
@@ -295,7 +295,7 @@ function AddProduct() {
                             <input type="file" name="file" id="file" class="form-control" accept=".xlsx, .xls" onchange="previewFile()" />
                         </div>
 
-                        <table class="table table-bordered" id="previewTable" style={{display:"none"}}>
+                        <table class="table table-bordered" id="previewTable" style={{ display: "none" }}>
                             <thead>
                                 <tr>
                                     <th>TenSp</th>

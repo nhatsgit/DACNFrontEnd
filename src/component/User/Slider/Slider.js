@@ -1,7 +1,21 @@
+import { Navigate, useNavigate } from "react-router-dom";
+import { addToCart } from "../../../apiServices/ShopingCartService";
+import { routePaths } from "../../../routes";
 
 function Slider({ products }) {
+    const navigate = useNavigate();
+
     if (!products || products.length === 0) {
         return <div>Đang tải...</div>;
+    }
+    const HandleAddToCart = async (productId) => {
+        try {
+            const res = await addToCart(productId, 1);
+        } catch (error) {
+
+        } finally {
+            navigate(routePaths.mycarts)
+        }
     }
     return (
         <>
@@ -23,7 +37,7 @@ function Slider({ products }) {
                                                 <h1><span>R</span>-EACTJS</h1>
                                                 <h2>{product.tenSp}</h2>
                                                 <p>{product.moTa}</p>
-                                                <button type="button" className="btn btn-default get">Get it now</button>
+                                                <button type="button" onClick={() => { HandleAddToCart(product.productId) }} className="btn btn-default get">Thêm vào giỏ</button>
                                             </div>
                                             <div className="col-sm-6">
                                                 <img src={`https://localhost:7233${product.anhDaiDien}`} width={441} height={215} className="girl img-responsive" alt="" />

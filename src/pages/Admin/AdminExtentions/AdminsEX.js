@@ -1,22 +1,64 @@
 import { Link } from "react-router-dom";
 import { routePaths } from "../../../routes";
+import { useState } from "react";
+import { notification } from "antd";
+import { CreateStaff } from "../../../apiServices/Seller/StaffServices";
+import { CreateShopOwner } from "../../../apiServices/Admin/ShopAdminServices";
 
 function CreateStore() {
+    const [account, setAccount] = useState({
+        userName: "username",
+        password: "",
+        fullName: "",
+        address: "",
+        avatar: "avatar",
+        email: "",
+        phoneNumber: "",
+    });
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setAccount((prevStaff) => ({
+            ...prevStaff,
+            [name]: value,
+        }));
+    };
+    const HandleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await CreateShopOwner(account);
+            console.log(result)
+            if (result == null) {
+                notification.error({
+                    message: `tên tài khoản ${account.userName} đã tồn tại trong hệ thống`
+                })
+            } else {
+                notification.success({
+                    message: `Đã thêm nhân viên ${account.userName} vào shop của bạn`
+                })
+            }
+        } catch (error) {
+            alert("That bai");
+            console.error(error);
+        }
+    }
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-8" style={{ textAlign: "left" }}>
                     <h1 className="mb-4" style={{ fontSize: "40px" }}>Tạo tài khoản chủ shop</h1>
-                    <form>
+                    <form onSubmit={HandleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="userName" className="form-label">User Name</label>
                             <input
                                 type="text"
                                 id="userName"
                                 name="userName"
+                                minLength={6}
+                                value={account.userName} onChange={handleInputChange}
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your username"
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -25,20 +67,27 @@ function CreateStore() {
                                 type="password"
                                 id="password"
                                 name="password"
+                                minLength={7}
+                                value={account.password} onChange={handleInputChange}
+
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your password"
+                                required
                             />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
                             <input
-                                type="text"
+                                type="number"
                                 id="phoneNumber"
                                 name="phoneNumber"
+                                value={account.phoneNumber} onChange={handleInputChange}
+                                minLength={8}
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your phone number"
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -47,9 +96,12 @@ function CreateStore() {
                                 type="email"
                                 id="email"
                                 name="email"
+                                value={account.email} onChange={handleInputChange}
+
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your email"
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -58,9 +110,12 @@ function CreateStore() {
                                 type="text"
                                 id="fullName"
                                 name="fullName"
+                                value={account.fullName} onChange={handleInputChange}
+
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your full name"
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -69,12 +124,15 @@ function CreateStore() {
                                 type="text"
                                 id="address"
                                 name="address"
+                                value={account.address} onChange={handleInputChange}
+
                                 className="form-control"
                                 style={{ width: "100%" }}
                                 placeholder="Enter your address"
+                                required
                             />
                         </div>
-                        <Link to={routePaths.Admin} className="btn btn-primary w-100">Register</Link>
+                        <button type="submit" className="btn btn-primary w-100">Register</button>
                     </form>
                 </div>
             </div>
@@ -84,74 +142,6 @@ function CreateStore() {
 
 
 
-function DetailStore() {
-    return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-8" style={{textAlign:"left"}}>
-                    <h1 className="mb-4">Shop Details</h1>
-                    
-                    <div className="card shadow-sm p-4">
-                        <h4 className="mb-3">Shops</h4>
-                        <hr />
-                        <dl className="row">
-                            <dt className="col-sm-3 mb-3 fw-bold">Shop Name:</dt>
-                            <dd className="col-sm-9 mb-3">TenCuaHang</dd>
-
-                            <dt className="col-sm-3 mb-3 fw-bold">Address:</dt>
-                            <dd className="col-sm-9 mb-3">DiaChi</dd>
-
-                            <dt className="col-sm-3 mb-3 fw-bold">Contact:</dt>
-                            <dd className="col-sm-9 mb-3">LienHe</dd>
-
-                            <dt className="col-sm-3 mb-3 fw-bold">Email:</dt>
-                            <dd className="col-sm-9 mb-3">Email</dd>
-
-                            <dt className="col-sm-3 mb-3 fw-bold">Phone Number:</dt>
-                            <dd className="col-sm-9 mb-3">PhoneNumber</dd>
-
-                            <dt className="col-sm-3 mb-3 fw-bold">Profile Image:</dt>
-                            <dd className="col-sm-9 mb-3">
-                                <img
-                                    width="100"
-                                    height="100"
-                                    className="rounded-circle border"
-                                    src="https://fps.cdnpk.net/images/home/subhome-ai.webp?w=649&h=649"
-                                    alt="Profile"
-                                />
-                        </dd>
-
-    <dt className="col-sm-3 mb-3 fw-bold">Cover Image:</dt>
-    <dd className="col-sm-9 mb-3">
-        <img
-            width="300"
-            height="100"
-            className="rounded border"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEQO2ga7Jsm-619O8lg9wp5S0uZtqppyDakw&s"
-            alt="Cover"
-        />
-    </dd>
-
-    <dt className="col-sm-3 mb-3 fw-bold">Creation Date:</dt>
-    <dd className="col-sm-9 mb-3">NgayTao</dd>
-
-    <dt className="col-sm-3 mb-3 fw-bold">Description:</dt>
-    <dd className="col-sm-9 mb-3">MoTa</dd>
-
-    <dt className="col-sm-3 mb-3 fw-bold">Category:</dt>
-    <dd className="col-sm-9 mb-3">TenLoai</dd>
-</dl>
-
-                    </div>
-
-                    <div className=" mt-4">
-                        <a href="/Admin" style={{textDecoration:"underline",color:"blue"}}>Back to List</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
 
 
-export { CreateStore, DetailStore };
+export { CreateStore };

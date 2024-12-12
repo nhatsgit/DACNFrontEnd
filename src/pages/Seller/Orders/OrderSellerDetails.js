@@ -42,19 +42,17 @@ function OrderSellerDetails() {
         <>
             <section id="cart_items">
                 <div className="container">
-                    <div className="breadcrumbs">
-                        <ol className="breadcrumb">
-                            <h1>Thông tin đơn hàng</h1>
-                        </ol>
-                    </div>
-                    <p>
-                        {order.orderStatus?.tenTrangThai || 'Lỗi...'}
+
+                    <h1>Thông tin đơn hàng</h1>
+
+                    <p style={{ color: "darkblue", fontSize: "15px" }}>
+                        {`${order.orderStatus?.tenTrangThai} ` || 'Lỗi...'}
                         {order.orderStatus?.orderStatusId < 5 ? (
-                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                            <button style={{ backgroundColor: "transparent", color: "blue", border: "2px solid blue" }} onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
                         ) : order.orderStatus?.orderStatusId === 9 ? (
-                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                            <button style={{ backgroundColor: "transparent", color: "blue", border: "2px solid blue" }} onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
                         ) : order.orderStatus?.orderStatusId === 10 ? (
-                            <button onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
+                            <button style={{ backgroundColor: "transparent", color: "blue", border: "2px solid blue" }} onClick={HandleUpdateStatus}>Cập nhật trạng thái</button>
                         ) : null}
 
                     </p>
@@ -116,6 +114,18 @@ function OrderSellerDetails() {
                                 {order.shippingAddress}
                             </dd>
                             <dt className="col-sm-3">
+                                Số điện thoại:
+                            </dt>
+                            <dd className="col-sm-9">
+                                {order.user.phoneNumber}
+                            </dd>
+                            <dt className="col-sm-3">
+                                Tên người nhận:
+                            </dt>
+                            <dd className="col-sm-9">
+                                {order.user.fullName}
+                            </dd>
+                            <dt className="col-sm-3">
                                 Ghi Chú:
                             </dt>
                             <dd className="col-sm-9">
@@ -160,7 +170,7 @@ function OrderSellerDetails() {
                                 <h3>Tổng Đơn Hàng:</h3>
                             </dt>
                             <dd className="col-sm-9">
-                                <h3>{FormatCurrency(order.totalPrice)}</h3>
+                                <h3 style={{ color: "darkblue" }}>{FormatCurrency(order.totalPrice)}</h3>
                             </dd>
                         </dl>
 

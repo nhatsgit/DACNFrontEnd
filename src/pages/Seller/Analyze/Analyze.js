@@ -63,9 +63,9 @@ function Analyze() {
 
             <div>
                 <h1 style={{ marginRight: "10px" }}>Số đơn hàng</h1>
-                <p>Tổng số: <span id="txtOrder1" style={{ color: "red" }}>{data.tongDon}</span></p>
-                <p>Chờ xác nhận: <span id="txtOrder2" style={{ color: "red" }}>{data.donChoXacNhan}</span></p>
-                <p>Đã thanh toán: <span id="txtOrder3" style={{ color: "red" }}>{data.donDaThanhToan}</span></p>
+                <p>Tổng số: <span id="txtOrder1" style={{ color: "blue" }}>{data.tongDon}</span></p>
+                <p>Chờ xác nhận: <span id="txtOrder2" style={{ color: "blue" }}>{data.donChoXacNhan}</span></p>
+                <p>Đã thanh toán: <span id="txtOrder3" style={{ color: "blue" }}>{data.donDaThanhToan}</span></p>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", height: "50px" }}>

@@ -6,11 +6,13 @@ import { CaculateDiscountPrice } from "../../../utils/CaculateDiscountPrice";
 import { routePaths } from "../../../routes";
 import * as ShopingCartService from "../../../apiServices/ShopingCartService";
 import style from './Product.module.css'
+import ProductReviews from "../../../component/User/Products/ProductReviews";
 function ProductDetails() {
     const query = new URLSearchParams(useLocation().search);
     const id = query.get('id');
     const navigate = useNavigate();
     const [product, setProduct] = useState({})
+    const [productReviews, setProductReviews] = useState({})
     const [productImages, setProductImages] = useState([])
     const [category, setCategory] = useState(' ')
     const [brand, setBrand] = useState(' ')
@@ -29,8 +31,10 @@ function ProductDetails() {
         const FetchProduct = async () => {
             try {
                 const res = await ProductService.GetProductById(id)
-                const listImage = await ProductService.GetProductImagesById(id)
-                setProductImages(groupImages(listImage));
+                const listImages = await ProductService.GetProductImagesById(id)
+                const listReviews = await ProductService.GetProductReviews(id)
+                setProductReviews(listReviews)
+                setProductImages(groupImages(listImages));
                 setProduct(res);
                 if (res.productCategoryId) {
                     const categoryName = await ProductService.GetCategoryName(res.productCategoryId)
@@ -170,6 +174,7 @@ function ProductDetails() {
                                     </div>
                                 </div>
                             </div>
+                            <ProductReviews reviews={productReviews}></ProductReviews>
                         </div>
                     </div>
                 </div>

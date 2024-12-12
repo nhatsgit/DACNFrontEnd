@@ -63,3 +63,54 @@ export function HideProduct(productId) {
         })
 }
 
+export function GetProductSellerById(id) {
+    return request.get(`seller/Products/${id}`, {
+        params: {
+
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function GetProductImagesById(id) {
+    return request.get(`Products/productImage/${id}`, {
+        params: {
+
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function UpdateProduct(product, mainImage, additionalImages) {
+    const formData = new FormData();
+    for (const key in product) {
+        if (product[key] !== null && product[key] !== undefined) {
+            formData.append(key, product[key]);
+        }
+    }
+    if (mainImage) {
+        formData.append("AnhDaiDien", mainImage);
+    }
+    if (additionalImages && additionalImages.length > 0) {
+        additionalImages.forEach((image, index) => {
+            formData.append(`listImages`, image);
+        });
+    }
+    return request.put(`seller/Products/${product.productId}`, formData, {
+        params: {
+            id: product.productId
+        }
+    })
+        .then((res) => {
+            return res.data;
+        }).catch(() => {
+            console.log("error")
+            return null;
+        })
+}

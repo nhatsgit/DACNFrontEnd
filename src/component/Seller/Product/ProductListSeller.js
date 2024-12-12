@@ -4,6 +4,7 @@ import { HideProduct } from "../../../apiServices/Seller/ProductSellerServices";
 import { useEffect, useState } from "react";
 import { FormatCurrency } from "../../../utils/FormatCurrency";
 import { routePaths } from "../../../routes";
+import { Modal, notification } from "antd";
 
 function ProductListSeller({ listProduct }) {
     const navigate = useNavigate();
@@ -19,18 +20,31 @@ function ProductListSeller({ listProduct }) {
     }
 
 
-    const HandleHideProduct = async (productId) => {
-        try {
-            alert("bạn có thực sự muốn ẩn sản phẩm này")
-            await HideProduct(productId);
-            const updatedProducts = products.filter(product => product.productId !== productId);
-            setProducts(updatedProducts);
-            alert("Ẩn sản phẩm thành công")
+    const HandleChangeProductStatus = async (productId) => {
+        Modal.confirm({
+            title: "Thay đổi trạng thái",
+            content: "Bạn có thực sự muốn thay đổi trạng thái sản phẩm này?",
+            okText: "Có",
+            cancelText: "Không",
+            onOk: async () => {
+                try {
+                    await HideProduct(productId);
+                    const updatedProducts = products.filter(product => product.productId !== productId);
+                    setProducts(updatedProducts);
+                    notification.success({
+                        message: "Thành công",
+                        description: "Thay đổi trạng thái thành công"
+                    })
 
-        } catch (error) {
+                } catch (error) {
 
-        }
+                }
+            },
+
+        });
+
     }
+
     return (
         <>
             <table className={styles.table}>
@@ -90,18 +104,18 @@ function ProductListSeller({ listProduct }) {
                                 </td>
                                 <td className={`${styles.tbody_td} ${styles.display}`}>
                                     {
-                                        product.daAn ? <button className={`${styles.btn} ${styles.btn_success}`} type="button">
-                                            <p style={{ color: "white", textDecoration: "underline" }} href="/Seller/Products/DeleteProduct/227">Hiện</p>
+                                        product.daAn ? <button className={`${styles.btn} ${styles.btn_success}`} type="button" onClick={() => { HandleChangeProductStatus(product.productId) }}>
+                                            <p style={{ color: "white", textDecoration: "underline" }} >Hiện</p>
                                         </button> :
-                                            <button className={`${styles.btn} ${styles.btn_danger}`} type="button" onClick={() => { HandleHideProduct(product.productId) }}>
+                                            <button className={`${styles.btn} ${styles.btn_danger}`} type="button" onClick={() => { HandleChangeProductStatus(product.productId) }}>
                                                 <p style={{ color: "white", textDecoration: "underline" }}>Ẩn</p>
                                             </button>
                                     }
                                     <button className={`${styles.btn} ${styles.btn_primary}`} type="button" >
-                                        <Link to={routePaths.editProduct} style={{ color: "white", textDecoration: "underline" }} >Chỉnh Sửa</Link>
+                                        <Link to={`${routePaths.editProduct}?id=${product.productId}`} style={{ color: "white", textDecoration: "underline" }} >Chỉnh Sửa</Link>
                                     </button>
                                     <button className={`${styles.btn} ${styles.btn_info}`} type="button">
-                                        <Link to={routePaths.detailProduct} style={{ color: "white", textDecoration: "underline" }} >Chi Tiết</Link>
+                                        <Link to={`${routePaths.detailProduct}?id=${product.productId}`} style={{ color: "white", textDecoration: "underline" }} >Chi Tiết</Link>
                                     </button>
 
                                 </td>

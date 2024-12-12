@@ -22,3 +22,27 @@ export function GetOrderById(id) {
             return null;
         })
 }
+export function CancelOrder(orderId) {
+    return request.post(`Orders/Cancel`, null, {
+        params: {
+            id: orderId
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}
+export function GiveBackOrder(orderId) {
+    return request.post(`Orders/GiveBack`, null, {
+        params: {
+            id: orderId
+        }
+    }).then((res) => {
+        return res.data;
+    }).catch(() => {
+        console.log("error")
+        return null;
+    })
+}

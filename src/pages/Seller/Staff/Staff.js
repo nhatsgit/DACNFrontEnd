@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import styles from "../Seller.module.css"
-import { GetStaff } from "../../../apiServices/Seller/StaffServices";
+import { DisableStaff, GetStaff, ResetPasswordStaff } from "../../../apiServices/Seller/StaffServices";
+import { Modal, notification } from "antd";
 
 function Staff() {
     const [staffs, setStaffs] = useState([]);
+    const [reloadKey, setReloadKey] = useState(0);
     useEffect(() => {
         const fetchApi = async () => {
             try {
                 const resStaffs = await GetStaff()
-                console.log(resStaffs);
                 setStaffs(resStaffs)
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -17,14 +18,58 @@ function Staff() {
             }
         }
         fetchApi();
-    }, []);
+    }, [reloadKey]);
+    const HandleResetPassword = async (userName) => {
+        Modal.confirm({
+            title: userName,
+            content: "Bạn có thực sự muốn reset mật khẩu của nhân viên?",
+            okText: "Có",
+            cancelText: "Không",
+            onOk: async () => {
+                try {
+                    await ResetPasswordStaff(userName);
+                    notification.success({
+                        message: "Thành công",
+                        description: "Reset password thành công"
+                    })
+                } catch (error) {
+
+                }
+            },
+
+        });
+
+
+    }
+    const HandleDisableStaff = async (userName) => {
+        Modal.confirm({
+            title: "Xóa nhân viên " + userName,
+            content: "Bạn có thực sự muốn xóa nhân viên này?",
+            okText: "Có",
+            cancelText: "Không",
+            onOk: async () => {
+                try {
+                    await DisableStaff(userName);
+                    notification.success({
+                        message: "Thành công",
+                        description: "Xóa nhân viên thành công"
+                    })
+                    setReloadKey(prevKey => prevKey + 1);
+                } catch (error) {
+
+                }
+            },
+
+        });
+
+    }
     return (
-        <div classNameName={styles.container}>
+        <div className={styles.container}>
             <div className={styles.main_content}>
 
                 {/* <hr /> */}
                 <h1>Nhân viên của shop</h1>
-                <table className={styles.table} style={{ width: "70%" }}>
+                <table className={styles.table} style={{ width: "100%" }}>
                     <thead>
                         <tr>
                             <th>UserName</th>
@@ -38,18 +83,13 @@ function Staff() {
                     <tbody>
                         {
                             staffs.map((staff, index) => {
-                                return <tr>
+                                return <tr key={index}>
                                     <td>{staff.userName}</td>
                                     <td>{staff.fullName}</td>
                                     <td>{staff.email}</td>
                                     <td style={{ display: "flex", justifyContent: "space-around" }}>
-                                        <form method="post" action="/Seller/Shops/DeleteStaff?username=Nv1">
-                                            <button type="submit" onclick="return confirm('Bạn Có Chắc Chắn Muốn Xóa Nhân Viên : Nv1 Khỏi Shop?');" className={` ${styles.btn} ${styles.btn_danger}`}>Xóa nhân viên</button>
-                                            <input name="__RequestVerificationToken" type="hidden" value="" /></form>
-                                        <form method="post" action="/Seller/Shops/ResetStaffPassword?userId=b5412a8a-f254-4eeb-ac07-88ef8aa9b50c">
-                                            <button type="submit" onclick="return confirm('Bạn Có Chắc Chắn Muốn Reset Mật Khẩu Của Nhân Viên : Nv1 Khỏi Shop?');" className={`${styles.btn} ${styles.btn_primary}`}>Reset Password</button>
-                                            <input name="__RequestVerificationToken" type="hidden" value="" /></form>
-
+                                        <button onClick={() => { HandleDisableStaff(staff.userName) }} className={` ${styles.btn} ${styles.btn_danger}`}>Xóa nhân viên</button>
+                                        <button onClick={() => { HandleResetPassword(staff.userName) }} className={`${styles.btn} ${styles.btn_primary}`}>Reset Password</button>
                                     </td>
                                 </tr>
                             })

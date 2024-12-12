@@ -1,7 +1,6 @@
 import Home from '../pages/User/Home/Home';
 import ProductDetails from '../pages/User/Product/ProductDetails';
 import Login from '../pages/Auth/Login';
-import Register from '../pages/Auth/Register';
 import Search from '../pages/User/Product/Search';
 import MyCarts from '../pages/User/Cart/MyCarts';
 import MyOrders from '../pages/User/Orders/MyOrders';
@@ -14,7 +13,6 @@ import Orders from '../pages/Seller/Orders/Orders';
 import Analyze from '../pages/Seller/Analyze/Analyze';
 import ProductByCategory from '../pages/User/Product/ProductByCategory';
 import AuthLayout from '../component/Auth/AuthLayout';
-import Account from '../pages/Auth/Account';
 import SellerLayout from '../component/Seller/SellerLayout';
 import NotFound from '../pages/NotFound';
 import OrderSellerDetails from '../pages/Seller/Orders/OrderSellerDetails';
@@ -24,19 +22,23 @@ import AdminLayout from '../component/Admin/AdminLayout';
 import {
     CanceledOrder, DeliveredOrder, OrderNotConfirm, RequestReturnedOrder,
     AddProduct, HiddenProduct, SoldOutProduct, ReturnedOrder,
-    AddStaff,RenueAnalyze, ProductAnalyze,Voucher,VoucherCreater,VoucherExpired,VoucherUnmount,
+    AddStaff, RenueAnalyze, ProductAnalyze, Voucher, VoucherCreater, VoucherExpired, VoucherUnmount,
     DetailProduct, EditProduct
 } from '../pages/Seller/index';
 
-import {CreateStore,DetailStore,
-    CreateBrands,EditBrands,DetailsBrands,DeleteBrands,
-    CreateProductCategory,EditProductCategory,DetailsProductCategory,DeleteProductCategory,
-    CreateVouchers,EditVouchers,DetailsVouchers,DeleteVouchers
-}   from '../pages/Admin/AdminExtentions/indexExtentionAdmin';
+import {
+    CreateStore,
+    CreateBrands, EditBrands, DetailsBrands, DeleteBrands,
+    CreateProductCategory, EditProductCategory, DetailsProductCategory, DeleteProductCategory,
+    CreateVouchers, EditVouchers, DetailsVouchers, DeleteVouchers
+} from '../pages/Admin/AdminExtentions/indexExtentionAdmin';
 
-import { Brands,Admin, ProductCategories, Vouchers} from '../pages/Admin/index';
+import { Brands, Admin, ProductCategories, Vouchers } from '../pages/Admin/index';
 
-import {EditVoucher,DetailsVoucher,DeleteVoucher} from '../pages/Seller/Voucher/SellerExtentions/VoucherSeller';
+import { EditVoucher, DetailsVoucher, DeleteVoucher, DetailsVoucherSeller } from '../pages/Seller/Voucher/SellerExtentions/VoucherSeller';
+import DetailStore from '../pages/Admin/Shop/DetailStore';
+import Register from '../pages/Auth/Register';
+import Account from '../pages/Auth/Account';
 
 
 const routePaths = {
@@ -76,33 +78,33 @@ const routePaths = {
     analyze: '/seller/analyze',
     renueAnalyze: '/seller/renueAnalyze',
     productAnalyze: '/seller/productAnalyze',
-    voucher:'/Voucher',
-    voucherCreater:'/VoucherCreater',
-    voucherExpired:'/VoucherExpired',
-    voucherUnmount:'/VoucherUnmount',
-    EditVoucher:'/EditVoucher',
-    DetailsVoucher:'/DetailsVoucher',
-    DeleteVoucher:'/DeleteVoucher',
+    voucher: '/Voucher',
+    voucherCreater: '/VoucherCreater',
+    voucherExpired: '/VoucherExpired',
+    voucherUnmount: '/VoucherUnmount',
+    EditVoucher: '/EditVoucher',
+    DetailsVoucherSeller: '/DetailsVoucher',
+    DeleteVoucher: '/DeleteVoucher',
 
     /////// Admin ////////
-    Admin:'/Admin',
-    Brands:'/brands',
-    productcategory:'/productcategory',
-    vouchers:'/vouchers',
-    createStore:'/createStore',
-    detailsStore:'/detailsStore',
-    createBrands:'/createBrands',
-    editBrands:'/EditBrands',
-    detailsBrands:'/DetailsBrands',
-    deleteBrands:'/DeleteBrands',
-    createProductCategory:'/CreateProductCategory',
-    editProductCategory:'/EditProductCategory',
-    detailsProductCategory:'/DetailsProductCategory',
-    deleteProductCategory:'/DeleteProductCategory',
-    createVouchers:'/CreateVouchers',
-    editVouchers:'/EditVouchers',
-    detailsVouchers:'/DetailsVouchers',
-    deleteVouchers:'/DeleteVouchers',
+    Admin: '/Admin',
+    Brands: '/admin/brands',
+    productcategory: '/admin/productcategory',
+    vouchers: '/admin/vouchers',
+    createStore: '/admin/createStore',
+    detailsStore: '/admin/detailsStore',
+    createBrands: '/admin/createBrands',
+    editBrands: '/admin/EditBrands',
+    detailsBrands: '/admin/DetailsBrands',
+    deleteBrands: '/admin/DeleteBrands',
+    createProductCategory: '/admin/CreateProductCategory',
+    editProductCategory: '/admin/EditProductCategory',
+    detailsProductCategory: '/admin/DetailsProductCategory',
+    deleteProductCategory: '/admin/DeleteProductCategory',
+    createVouchers: '/admin/CreateVouchers',
+    editVouchers: '/admin/EditVouchers',
+    detailsVouchers: '/admin/DetailsVouchers',
+    deleteVouchers: '/admin/DeleteVouchers',
 }
 const publicRoutes = [
     { path: routePaths.notFound, component: NotFound, layout: null },
@@ -150,29 +152,29 @@ const publicRoutes = [
     { path: routePaths.voucherExpired, component: VoucherExpired, layout: SellerLayout },
     { path: routePaths.voucherUnmount, component: VoucherUnmount, layout: SellerLayout },
     { path: routePaths.EditVoucher, component: EditVoucher, layout: SellerLayout },
-    { path: routePaths.DetailsVoucher, component: DetailsVoucher, layout: SellerLayout },
+    { path: routePaths.DetailsVoucherSeller, component: DetailsVoucherSeller, layout: SellerLayout },
     { path: routePaths.DeleteVoucher, component: DeleteVoucher, layout: SellerLayout },
 
     ///////////Admin///////////
-    { path: routePaths.Admin, component: Admin, layout: AdminLayout},
-    { path: routePaths.Brands, component: Brands, layout: AdminLayout},
-    { path: routePaths.productcategory, component:ProductCategories, layout: AdminLayout},
-    { path: routePaths.vouchers, component:Vouchers, layout: AdminLayout},
+    { path: routePaths.Admin, component: Admin, layout: AdminLayout },
+    { path: routePaths.Brands, component: Brands, layout: AdminLayout },
+    { path: routePaths.productcategory, component: ProductCategories, layout: AdminLayout },
+    { path: routePaths.vouchers, component: Vouchers, layout: AdminLayout },
 
-    { path: routePaths.createStore, component:CreateStore, layout: AdminLayout},
-    { path: routePaths.detailsStore, component:DetailStore, layout:AdminLayout },
-    { path: routePaths.createBrands, component:CreateBrands, layout: AdminLayout},
-    { path: routePaths.editBrands, component:EditBrands, layout: AdminLayout},
-    { path: routePaths.detailsBrands, component:DetailsBrands, layout: AdminLayout},
-    { path: routePaths.deleteBrands, component:DeleteBrands, layout: AdminLayout},
-    { path: routePaths.createProductCategory, component:CreateProductCategory, layout: AdminLayout},
-    { path: routePaths.editProductCategory, component:EditProductCategory, layout: AdminLayout},
-    { path: routePaths.detailsProductCategory, component:DetailsProductCategory, layout: AdminLayout},
-    { path: routePaths.deleteProductCategory, component:DeleteProductCategory, layout: AdminLayout},
-    { path: routePaths.createVouchers, component:CreateVouchers, layout: AdminLayout},
-    { path: routePaths.editVouchers, component:EditVouchers, layout: AdminLayout},
-    { path: routePaths.detailsVouchers, component:DetailsVouchers, layout: AdminLayout},
-    { path: routePaths.deleteVouchers, component:DeleteVouchers, layout: AdminLayout},
+    { path: routePaths.createStore, component: CreateStore, layout: AdminLayout },
+    { path: routePaths.detailsStore, component: DetailStore, layout: AdminLayout },
+    { path: routePaths.createBrands, component: CreateBrands, layout: AdminLayout },
+    { path: routePaths.editBrands, component: EditBrands, layout: AdminLayout },
+    { path: routePaths.detailsBrands, component: DetailsBrands, layout: AdminLayout },
+    { path: routePaths.deleteBrands, component: DeleteBrands, layout: AdminLayout },
+    { path: routePaths.createProductCategory, component: CreateProductCategory, layout: AdminLayout },
+    { path: routePaths.editProductCategory, component: EditProductCategory, layout: AdminLayout },
+    { path: routePaths.detailsProductCategory, component: DetailsProductCategory, layout: AdminLayout },
+    { path: routePaths.deleteProductCategory, component: DeleteProductCategory, layout: AdminLayout },
+    { path: routePaths.createVouchers, component: CreateVouchers, layout: AdminLayout },
+    { path: routePaths.editVouchers, component: EditVouchers, layout: AdminLayout },
+    { path: routePaths.detailsVouchers, component: DetailsVouchers, layout: AdminLayout },
+    { path: routePaths.deleteVouchers, component: DeleteVouchers, layout: AdminLayout },
 
 ]
 const privateRoutes = [

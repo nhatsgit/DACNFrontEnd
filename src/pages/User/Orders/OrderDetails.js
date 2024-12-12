@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import * as OrderService from "../../../apiServices/OrderService";
 import { FormatCurrency } from "../../../utils/FormatCurrency";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { formatDate } from "../../../utils/FormatDate";
+import { Modal, notification } from "antd";
+import { routePaths } from "../../../routes";
+import { addToCart } from "../../../apiServices/ShopingCartService";
+import ProductReviewModal from "../../../component/Context/Modal/ProductReviewModal";
 
 function OrderDetails() {
     const query = new URLSearchParams(useLocation().search);
     const id = query.get('id');
-    const [order, setOrder] = useState(null); // Chờ dữ liệu có từ API
+    const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(true)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -24,7 +30,53 @@ function OrderDetails() {
             }
         };
         fetchApi();
-    }, []);
+    }, [reload]);
+    const HandleCancelOrder = async (orderId) => {
+        Modal.confirm({
+            title: "Hủy đơn",
+            content: "Bạn có thực sự muốn hủy đơn này?",
+            okText: "Có",
+            cancelText: "Không",
+            onOk: async () => {
+                try {
+                    await OrderService.CancelOrder(orderId)
+                    notification.success({
+                        message: "Thành công",
+                        description: "Hủy đơn thành công"
+                    })
+                    setReload(!reload);
+
+                } catch (error) {
+
+                }
+            },
+
+        });
+
+    }
+    const HandleGiveBackOrder = async (orderId) => {
+        Modal.confirm({
+            title: "Yêu cầu trả hàng",
+            content: "Bạn có thực sự muốn trả lại đơn này?",
+            okText: "Có",
+            cancelText: "Không",
+            onOk: async () => {
+                try {
+                    await OrderService.GiveBackOrder(orderId)
+                    notification.success({
+                        message: "Thành công",
+                        description: "Trả lại thành công, nhân viên sẽ đến lấy lại hàng và hoàn tiền khi được xác nhận"
+                    })
+                    setReload(!reload);
+
+                } catch (error) {
+
+                }
+            },
+
+        });
+
+    }
 
     if (loading) {
         return <div>Đang cập nhật dữ liệu...</div>;
@@ -34,11 +86,9 @@ function OrderDetails() {
         <>
             <section id="cart_items">
                 <div className="container">
-                    <div className="breadcrumbs">
-                        <ol className="breadcrumb">
-                            <h1>Thông tin đơn hàng</h1>
-                        </ol>
-                    </div>
+
+                    <h1>Thông tin đơn hàng</h1>
+
                     <div className="table-responsive cart_info">
                         <table className="table table-condensed">
                             <thead>
@@ -55,7 +105,8 @@ function OrderDetails() {
                                 {order.orderDetails.map((orderDetail, index) => {
                                     return <tr key={index}>
                                         <td className="cart_product" style={{ width: "200px" }}>
-                                            <a ><img src={`https://localhost:7233${orderDetail.product.anhDaiDien}`} alt="" width="120" height="100" /></a>
+
+                                            <Link to={`${routePaths.productDetails}?id=${orderDetail.product.productId}`}><img src={`https://localhost:7233${orderDetail.product.anhDaiDien}`} alt="" width="120" height="100" /></Link>
                                         </td>
                                         <td className="cart_description">
                                             <h4><a >{orderDetail.product.tenSp}</a></h4>
@@ -75,17 +126,14 @@ function OrderDetails() {
                                             {order.orderStatus.orderStatusId >= 5 ?
                                                 <>
                                                     {orderDetail.isReview != true ?
-                                                        <button onClick={() => { }} id="openModalBtn" type="button" className="btn btn-fefault cart">
-                                                            Đánh Giá
-                                                        </button>
+                                                        <ProductReviewModal productId={orderDetail.product.productId} orderId={order.orderId}></ProductReviewModal>
                                                         : null}
 
                                                     <button type="button" className="btn btn-fefault cart">
-                                                        <a
-                                                            style={{ color: "white" }}
+                                                        <Link style={{ color: "white" }}
                                                             onMouseOver={(e) => (e.currentTarget.style.color = "black")}
-                                                            onMouseOut={(e) => (e.currentTarget.style.color = "white")}
-                                                        >Mua Lại</a>
+                                                            onMouseOut={(e) => (e.currentTarget.style.color = "white")} to={`${routePaths.productDetails}?id=${orderDetail.product.productId}`}>Mua Lại</Link>
+
                                                     </button>
                                                 </>
 
@@ -168,13 +216,17 @@ function OrderDetails() {
                             </dd>
                         </dl>
 
-                        <form method="post">
-                            <input type="submit" value="Hủy Đơn" onClick={() => { }} className="btn btn-danger" />
-                        </form>
+                        {
+                            order.orderStatus?.orderStatusId <= 2 && <button onClick={() => { HandleCancelOrder(order.orderId) }} className="btn btn-danger">Hủy đơn</button>
+                        }
+                        {
+                            order.orderStatus?.orderStatusId == 5 && <button onClick={() => { HandleGiveBackOrder(order.orderId) }} className="btn btn-danger">Yêu cầu trả hàng</button>
+                        }
 
-                        <form method="post">
-                            <input type="submit" value="Yêu cầu trả hàng" onClick={() => { }} className="btn btn-danger" />
-                        </form>
+
+
+
+
 
                     </div>
                 </div>

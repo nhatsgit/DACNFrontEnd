@@ -5,6 +5,124 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,300,600,700);
 @import url(http://fonts.googleapis.com/css?family=Abel);
 
+/* voucher */
+.scrollable-voucher {
+  margin: 10px;
+  width: 95%;
+  height: 100%;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  box-sizing: border-box;
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width: 40%;
+  height: 500px;
+  position: relative;
+  overflow-y: auto;
+  margin: 5% auto;
+  padding: 20px;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+.voucherContainer {
+  background-color: white;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+}
+
+.voucherbutton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.voucherbtn {
+  float: right;
+  margin: 5px;
+  background-color: red;
+}
+
+.voucher {
+  height: 100px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 5px;
+  display: flex;
+  text-align: center;
+}
+
+.Box1 {
+  width: 30%;
+  background-color: white;
+}
+
+.Box2 {
+  width: 70%;
+  background-color: greenyellow;
+  padding: 20px;
+  display: flex;
+}
+
+input[type="radio"] {
+  margin-left: auto;
+  margin-right: 10px;
+  width: 20px;
+}
+
+.Box1 p {
+  color: #333;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.Box2 ul>li {
+  list-style-type: none;
+  color: #333;
+  font-size: 14px;
+}
+
 /* myorders */
 .product {
   border-top: 1px solid grey;

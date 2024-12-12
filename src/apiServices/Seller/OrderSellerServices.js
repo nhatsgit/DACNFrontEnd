@@ -1,10 +1,11 @@
 import request from "../../utils/request";
 
-export function GetAllOrders(currentPage) {
+export function GetAllOrders(currentPage, date) {
     return request.get('seller/Orders', {
         params: {
             pageNumber: currentPage,
-            pageSize: 5
+            pageSize: 5,
+            date: date
         }
     }).then((res) => {
 

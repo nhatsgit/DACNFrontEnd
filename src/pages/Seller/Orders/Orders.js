@@ -9,6 +9,8 @@ function Orders() {
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPage, settotalPage] = useState(5)
     const [loading, setLoading] = useState(true);
+    const [dateSearch, setDateSearch] = useState()
+    const [currentDateSearch, setCurrentDateSearch] = useState()
     const navigate = useNavigate();
     useEffect(() => {
         const fetchApi = async () => {
@@ -31,7 +33,7 @@ function Orders() {
     }, []);
     const HandleSelectPage = async (pageNumber) => {
         try {
-            const res = await GetAllOrders(pageNumber);
+            const res = await GetAllOrders(pageNumber, currentDateSearch);
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
@@ -45,7 +47,28 @@ function Orders() {
         } finally {
             setTimeout(() => {
                 setLoading(false);
-            }, 500);
+            }, 100);
+        }
+    }
+    const HandleSearchOrders = async () => {
+        try {
+            const res = await GetAllOrders(1, dateSearch);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+
+            setOrders(res.items)
+            setCurrentPage(res.pageNumber)
+            settotalPage(res.pageCount)
+            setCurrentDateSearch(dateSearch)
+            console.log(dateSearch)
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 100);
         }
     }
 
@@ -56,8 +79,13 @@ function Orders() {
     }
     return (
         <section style={{ width: "90%", margin: "auto", }}>
+
             <h1 style={{ textAlign: "center" }}>Tất cả đơn hàng của shop</h1>
             <section>
+                <center>
+                    <input type="date" value={dateSearch} onChange={(e) => { setDateSearch(e.target.value) }}></input>
+                    <button onClick={HandleSearchOrders} >Lọc</button>
+                </center>
                 {orders ? <>
                     <OrderListSeller orderList={orders}></OrderListSeller>
                     <hr />

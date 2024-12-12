@@ -1,10 +1,13 @@
 import SearchForm from "./SearchForm/SearchForm";
 import { Link } from "react-router-dom";
 import { routePaths } from "../../routes";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
+import { GetMyInfo } from "../../apiServices/AuthService";
 function Header() {
     const { auth, setAuth } = useContext(AuthContext);
+    const [user, setUser] = useState({});
+
     const HandleLogout = () => {
 
         localStorage.removeItem('ACCESS_TOKEN');
@@ -15,6 +18,19 @@ function Header() {
             }
         })
     }
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const resUser = await GetMyInfo();
+                setUser(resUser);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        if (auth.isAuthenticated) {
+            fetchApi();
+        }
+    }, []);
     return (
         <header id="header">
             <div className="header_top">
@@ -82,10 +98,20 @@ function Header() {
                                         <>
 
                                             <li className="nav-item">
-                                                <img style={{ borderRadius: '50%' }} width="20" height="20" src="images/home/react.png" alt="avatar" ></img>
+                                                <img
+                                                    style={{ borderRadius: '50%' }}
+                                                    width="20"
+                                                    height="20"
+                                                    src={`${process.env.REACT_APP_API_URL}${user.avatar}`}
+                                                    alt="avatar"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = "images/home/react.png";
+                                                    }}
+                                                />
                                             </li>
                                             <li className="nav-item">
-                                                <Link to="/login" className="nav-link text-dark" id="login" > Hello {auth.user.username}</Link>
+                                                <Link to="/login" className="nav-link text-dark" id="login" > Hello {user.userName}</Link>
                                             </li>
                                             <li className="nav-item">
                                                 <Link to="/" onClick={HandleLogout} className="nav-link text-dark" id="register" > Đăng Xuất</Link>

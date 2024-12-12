@@ -33,7 +33,7 @@ const LineChart = ({ data }) => {
         labels: dates,
         datasets: [
             {
-                label: "Doanh thu (triệu VND)",
+                label: "Số đơn:",
                 data: quantities,
                 borderColor: "rgba(75, 192, 192, 1)",
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -61,7 +61,7 @@ const LineChart = ({ data }) => {
             y: {
                 title: {
                     display: true,
-                    text: "Doanh thu",
+                    text: "Số đơn",
                 },
             },
         },

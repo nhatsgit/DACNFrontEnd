@@ -1,4 +1,5 @@
 
+import { notification } from "antd";
 import axios from "axios";
 
 
@@ -27,16 +28,20 @@ request.interceptors.response.use(
             if (error.response.status === 401) {
                 sessionStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
                 localStorage.removeItem('ACCESS_TOKEN');
+                notification.success({ message: "" })
+
                 window.location.href = '/login';
+
             }
 
-            // Xử lý lỗi 403 (Forbidden)
-            if (error.response.status === 403) {
-                window.location.href = '/notfound'; // Điều hướng tới trang Not Found
+            // Xử lý lỗi 
+            if (error.response.status === 403 || error.response.status === 400) {
+                // window.location.href = '/notfound';
             }
         }
         return Promise.reject(error);
     }
 );
 
-export default request;
+
+export default request; 

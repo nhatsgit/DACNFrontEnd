@@ -66,7 +66,7 @@ function MyCarts() {
                         return <div className="container" key={index}>
                             <div style={{ textAlign: "left" }}>
                                 <strong style={{ paddingLeft: "20px", color: "red" }}>{cart.shop.tenCuaHang}</strong>
-                                <button type="button" style={{ backgroundColor: "transparent", border: "2px solid red" }}><a style={{ color: "orangered" }}>Xem Shop</a></button>
+                                <button type="button" style={{ backgroundColor: "transparent", border: "2px solid red" }}><Link to={`${routePaths.shop}?id=${cart.shop.shopId}`} style={{ color: "orangered" }}>Xem Shop</Link></button>
                             </div>
                             <div className="table-responsive cart_info">
                                 <table className="table table-condensed">
