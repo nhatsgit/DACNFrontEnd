@@ -3,6 +3,8 @@ import styles from "./SellerLayout.module.css";
 import HeaderSeller from "./HeaderSeller";
 import { routePaths } from "../../routes";
 import { useState } from "react";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 
 function SellerLayout({ children }) {

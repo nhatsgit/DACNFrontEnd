@@ -114,13 +114,12 @@ a:hover {
 
 .mainContent {
     display: flex;
-    /* margin-top: 20px; */
-    /* padding: 0 20px; */
     text-align: left;
 }
 
 .leftNavbar {
     position: -webkit-sticky;
+    position: sticky;
     top: 0;
     left: 0;
     background-color: #f8f9fa;
@@ -128,7 +127,15 @@ a:hover {
     overflow-y: auto;
     height: 100vh;
     padding: inherit;
+    transition: all 0.3s ease;
 }
+
+.leftNavbar.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 
 .leftNavLinks {
     padding: inherit;

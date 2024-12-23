@@ -42,7 +42,7 @@ function AddStaff() {
     return (
         <div className={styles.container} style={{ textAlign: "left" }}>
             <div className={styles.main_content}>
-                <h1>Thêm nhân viên</h1>
+                <h1 style={{ fontSize: "30px" }}>Thêm nhân viên</h1>
                 <form onSubmit={HandleSubmit} >
                     <div className={styles.form_group}>
                         <label for="UserName">UserName</label>
