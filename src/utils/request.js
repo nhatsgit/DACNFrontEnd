@@ -36,7 +36,7 @@ request.interceptors.response.use(
 
             // Xử lý lỗi 
             if (error.response.status === 403 || error.response.status === 400) {
-                // window.location.href = '/notfound';
+                window.location.href = '/notfound';
             }
         }
         return Promise.reject(error);

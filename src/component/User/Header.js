@@ -1,13 +1,14 @@
 import SearchForm from "./SearchForm/SearchForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { routePaths } from "../../routes";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { GetMyInfo } from "../../apiServices/AuthService";
+import { notification } from "antd";
 function Header() {
     const { auth, setAuth } = useContext(AuthContext);
     const [user, setUser] = useState({});
-
+    const navigate = useNavigate();
     const HandleLogout = () => {
 
         localStorage.removeItem('ACCESS_TOKEN');
@@ -24,7 +25,8 @@ function Header() {
                 const resUser = await GetMyInfo();
                 setUser(resUser);
             } catch (error) {
-                console.error("Error fetching data:", error);
+                notification.info({ message: "Đã hết phiên đang nhập, vui lòng đăng nhập lại" });
+                navigate("/login");
             }
         };
         if (auth.isAuthenticated) {
@@ -111,7 +113,7 @@ function Header() {
                                                 />
                                             </li>
                                             <li className="nav-item">
-                                                <Link to="/login" className="nav-link text-dark" id="login" > Hello {user.userName}</Link>
+                                                <Link to={`${routePaths.account}`} className="nav-link text-dark" id="login" > Hello {user.userName}</Link>
                                             </li>
                                             <li className="nav-item">
                                                 <Link to="/" onClick={HandleLogout} className="nav-link text-dark" id="register" > Đăng Xuất</Link>

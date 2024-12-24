@@ -11,7 +11,6 @@ const AddressSelector = ({ onClose, setAddress }) => {
     const [selectedWard, setSelectedWard] = useState("");
     const [specificAddress, setSpecificAddress] = useState("");
 
-    // Fetch provinces on mount
     useEffect(() => {
         async function fetchProvinces() {
             const data = await GetProvinces();
@@ -20,33 +19,30 @@ const AddressSelector = ({ onClose, setAddress }) => {
         fetchProvinces();
     }, []);
 
-    // Fetch districts when province is selected
     useEffect(() => {
         if (selectedProvince) {
             async function fetchDistricts() {
                 const data = await GetDistricts(selectedProvince);
                 setDistricts(data);
-                setWards([]); // Reset wards when province changes
-                setSelectedDistrict(""); // Reset selected district
-                setSelectedWard(""); // Reset selected ward
+                setWards([]);
+                setSelectedDistrict("");
+                setSelectedWard("");
             }
             fetchDistricts();
         }
     }, [selectedProvince]);
 
-    // Fetch wards when district is selected
     useEffect(() => {
         if (selectedDistrict) {
             async function fetchWards() {
                 const data = await GetWards(selectedDistrict);
                 setWards(data);
-                setSelectedWard(""); // Reset selected ward
+                setSelectedWard("");
             }
             fetchWards();
         }
     }, [selectedDistrict]);
 
-    // Handlers for selection changes
     const handleProvinceChange = (e) => setSelectedProvince(e.target.value);
     const handleDistrictChange = (e) => setSelectedDistrict(e.target.value);
     const handleWardChange = (e) => setSelectedWard(e.target.value);
@@ -73,11 +69,11 @@ const AddressSelector = ({ onClose, setAddress }) => {
             fullAddress.district,
             fullAddress.province,
         ]
-            .filter(Boolean) // Loại bỏ các giá trị rỗng
+            .filter(Boolean)
             .join(", ");
 
         setAddress(addressString);
-        onClose(); // Close popup after submission
+        onClose();
     };
 
     return (
