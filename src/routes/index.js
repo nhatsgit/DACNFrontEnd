@@ -39,6 +39,7 @@ import { EditVoucher, DetailsVoucher, DeleteVoucher, DetailsVoucherSeller } from
 import DetailStore from '../pages/Admin/Shop/DetailStore';
 import Register from '../pages/Auth/Register';
 import Account from '../pages/Auth/Account';
+import ResultPayment from '../pages/User/Cart/ResultPayment';
 
 
 const routePaths = {
@@ -56,6 +57,7 @@ const routePaths = {
     category: '/category',
     orderdetails: '/orderdetails',
     checkout: '/checkout',
+    resultPayment: '/resultPayment',
 
     /////// Seller ////////
     products: '/seller/product',
@@ -121,6 +123,7 @@ const publicRoutes = [
     { path: routePaths.shop, component: Shop },
     { path: routePaths.orderdetails, component: OrderDetails },
     { path: routePaths.checkout, component: CheckOut },
+    { path: routePaths.resultPayment, component: ResultPayment },
 
     ///////////Seller///////////
     //Product

@@ -62,15 +62,32 @@ function CheckOut() {
         return <div>Đang tải...</div>;
     }
     const HandleCheckOut = async (e) => {
-        e.preventDefault();
-        const order = await ShopingCartService.CheckOutCart({
-            shoppingCartId: cart.shoppingCartId,
-            shippingAddress: shippingAdress,
-            voucherId: voucherId,
-            paymentId: paymentId,
-            notes: note
-        })
-        navigate(`${routePaths.orderdetails}?id=${order.orderId}`)
+        if (paymentId == 1) {
+            e.preventDefault();
+            const order = await ShopingCartService.CheckOutCart({
+                shoppingCartId: cart.shoppingCartId,
+                shippingAddress: shippingAdress,
+                voucherId: voucherId,
+                paymentId: paymentId,
+                notes: note
+            })
+            navigate(`${routePaths.orderdetails}?id=${order.orderId}`)
+        } else {
+            e.preventDefault();
+            const paymentUrl = await ShopingCartService.CheckOutCart({
+                shoppingCartId: cart.shoppingCartId,
+                shippingAddress: shippingAdress,
+                voucherId: voucherId,
+                paymentId: paymentId,
+                notes: note
+            })
+
+            if (paymentUrl) {
+                window.location.href = paymentUrl;
+            } else {
+                alert("Không thể tạo URL thanh toán. Vui lòng thử lại.");
+            }
+        }
     };
     return (
         <>
