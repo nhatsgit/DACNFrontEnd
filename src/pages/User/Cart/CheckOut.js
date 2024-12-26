@@ -145,7 +145,8 @@ function CheckOut() {
                                                         cart.cartItems.map((cartItem, index) => {
                                                             return <tr key={index}>
                                                                 <td className="cart_product" style={{ width: "200px" }}>
-                                                                    <Link to={`${routePaths.productDetails}?id=${cartItem.product.productId}`}><img src={`${process.env.REACT_APP_API_URL}${cartItem.product.anhDaiDien}`} alt="" width={120} height={100} /></Link>
+                                                                    <Link to={`${routePaths.productDetails}?id=${cartItem.product.productId}`}>
+                                                                        <img src={`${process.env.REACT_APP_API_URL}${cartItem.product.anhDaiDien}`} alt="" width={120} height={100} /></Link>
                                                                 </td>
                                                                 <td className="cart_description">
                                                                     <h4><a >{cartItem.product.tenSp}</a></h4>

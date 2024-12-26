@@ -184,6 +184,7 @@ export function AddReviews({ noiDung, diem, productId, orderId, files }) {
         })
 
 }
+
 export function GetProductReviews(productId) {
     return request.get(`Reviews/ProductReviews`, {
         params: {

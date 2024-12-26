@@ -114,3 +114,23 @@ export function UpdateProduct(product, mainImage, additionalImages) {
             return null;
         })
 }
+export function AddProductsByExcel(file) {
+    if (!file) {
+        throw new Error("Vui lòng chọn file Excel.");
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    return request.post(`seller/Products/excelAdd`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+        .then((res) => {
+            return res.data;
+        }).catch(() => {
+            console.log("error")
+            return null;
+        })
+
+}

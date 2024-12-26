@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../Seller.module.css";
 import { GetBrands, GetCategories } from "../../../apiServices/ProductService";
 import { CreateProduct } from "../../../apiServices/Seller/ProductSellerServices";
+import ExcelForm from "../../../component/Seller/Product/ExcelForm";
 
 function AddProduct() {
     const [product, setProduct] = useState({
@@ -289,32 +290,7 @@ function AddProduct() {
                     </form>
                 )}
                 {isAutoForm && (
-                    <form>
-                        <div class="form-group">
-                            <label for="file">Chọn file Excel:</label>
-                            <input type="file" name="file" id="file" class="form-control" accept=".xlsx, .xls" onchange="previewFile()" />
-                        </div>
-
-                        <table class="table table-bordered" id="previewTable" style={{ display: "none" }}>
-                            <thead>
-                                <tr>
-                                    <th>TenSp</th>
-                                    <th>AnhDaiDien</th>
-                                    <th>MoTa</th>
-                                    <th>ThongSo</th>
-                                    <th>GiaNhap</th>
-                                    <th>GiaBan</th>
-                                    <th>SoLuongCon</th>
-                                    <th>PhanTramGiam</th>
-                                    <th>ProductCategoryId</th>
-                                    <th>BrandId</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <button type="submit" class="btn btn-info" className={`${styles.btn_primary} ${styles.btn}`}>Thêm sản phẩm</button>
-                    </form>
+                    <ExcelForm></ExcelForm>
                 )}
             </div>
         </div>
