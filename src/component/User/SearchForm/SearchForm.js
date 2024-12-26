@@ -3,6 +3,7 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import { routePaths } from '../../../routes';
 import { Link } from 'react-router-dom';
 import * as SearchService from '../../../apiServices/SearchService';
+import ImageModal from './ImageModal';
 
 function SearchForm() {
 
@@ -11,7 +12,15 @@ function SearchForm() {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false)
     const inputRef = useRef();
+    const [modalVisible, setModalVisible] = useState(false);
 
+    const showModal = () => {
+        setModalVisible(true);
+    };
+
+    const handleClose = () => {
+        setModalVisible(false);
+    };
     useEffect(() => {
         if (debouncedKeyword.trim() === '') {
             setSuggestions([]);
@@ -35,6 +44,9 @@ function SearchForm() {
     function handleSearchSubmit() {
         setShowSuggestions(false);
         setKeyword('');
+    }
+    function handleSearchImageClick() {
+
     }
     function handleCompleteSuggestion(suggestion) {
         setKeyword(suggestion);
@@ -67,6 +79,18 @@ function SearchForm() {
                         &times;
                     </button>
                 )}
+                <Link to={`${routePaths.searchByImage}`}>
+                    <button
+                        className="searchButtonCamera"
+                        type="button"
+                        onMouseOver={(e) => e.target.style.color = 'blue'}
+                        onMouseOut={(e) => e.target.style.color = 'rgb(15, 162, 254)'}
+                    >
+                        <i className="fa fa-camera"></i>
+                    </button>
+                </Link>
+
+
                 <Link onClick={handleSearchSubmit} to={`${routePaths.search}?keyword=${keyword}`}>
                     <button
 

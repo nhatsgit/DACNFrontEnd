@@ -40,6 +40,7 @@ import DetailStore from '../pages/Admin/Shop/DetailStore';
 import Register from '../pages/Auth/Register';
 import Account from '../pages/Auth/Account';
 import ResultPayment from '../pages/User/Cart/ResultPayment';
+import SearchByImagePage from '../pages/User/Product/ProductsByImage';
 
 
 const routePaths = {
@@ -51,6 +52,7 @@ const routePaths = {
     login: '/login',
     account: '/account',
     search: '/search',
+    searchByImage: '/searchByImage',
     mycarts: '/mycarts',
     myorders: '/myorders',
     shop: '/shop',
@@ -118,6 +120,7 @@ const publicRoutes = [
     { path: routePaths.login, component: Login, layout: AuthLayout },
     { path: routePaths.account, component: Account, layout: AuthLayout },
     { path: routePaths.search, component: Search },
+    { path: routePaths.searchByImage, component: SearchByImagePage },
     { path: routePaths.mycarts, component: MyCarts },
     { path: routePaths.myorders, component: MyOrders },
     { path: routePaths.shop, component: Shop },

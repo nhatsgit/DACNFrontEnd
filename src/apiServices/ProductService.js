@@ -197,3 +197,23 @@ export function GetProductReviews(productId) {
         return null;
     })
 }
+export function SearchByImage({ image }) {
+    const formData = new FormData();
+
+    if (image) {
+        formData.append("image", image);
+    }
+
+    return request.post(`Products/searchByImage`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+        .then((res) => {
+            return res.data;
+        }).catch((res) => {
+
+            return null;
+        })
+
+}
