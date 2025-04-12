@@ -34,13 +34,16 @@ import {
 } from '../pages/Admin/AdminExtentions/indexExtentionAdmin';
 
 import { Brands, Admin, ProductCategories, Vouchers } from '../pages/Admin/index';
-
 import { EditVoucher, DetailsVoucher, DeleteVoucher, DetailsVoucherSeller } from '../pages/Seller/Voucher/SellerExtentions/VoucherSeller';
 import DetailStore from '../pages/Admin/Shop/DetailStore';
 import Register from '../pages/Auth/Register';
 import Account from '../pages/Auth/Account';
 import ResultPayment from '../pages/User/Cart/ResultPayment';
 import SearchByImagePage from '../pages/User/Product/ProductsByImage';
+import RoleClaims from '../pages/Admin/Claims/RoleClaims';
+import UserClaims from '../pages/Admin/Claims/UserClaims';
+import RoleClaimsDetails from '../pages/Admin/Claims/RoleClaimsDetails';
+import UserClaimsDetails from '../pages/Admin/Claims/UserClaimsDetails';
 
 
 const routePaths = {
@@ -92,6 +95,10 @@ const routePaths = {
 
     /////// Admin ////////
     Admin: '/Admin',
+    RoleClaims: '/RoleClaims',
+    UserClaims: '/UserClaims',
+    UserClaimsDetails: '/UserClaimsDetails',
+    RoleClaimsDetails: '/RoleClaimsDetails',
     Brands: '/admin/brands',
     productcategory: '/admin/productcategory',
     vouchers: '/admin/vouchers',
@@ -163,6 +170,10 @@ const publicRoutes = [
 
     ///////////Admin///////////
     { path: routePaths.Admin, component: Admin, layout: AdminLayout },
+    { path: routePaths.RoleClaims, component: RoleClaims, layout: AdminLayout },
+    { path: routePaths.UserClaims, component: UserClaims, layout: AdminLayout },
+    { path: routePaths.UserClaimsDetails, component: UserClaimsDetails, layout: AdminLayout },
+    { path: routePaths.RoleClaimsDetails, component: RoleClaimsDetails, layout: AdminLayout },
     { path: routePaths.Brands, component: Brands, layout: AdminLayout },
     { path: routePaths.productcategory, component: ProductCategories, layout: AdminLayout },
     { path: routePaths.vouchers, component: Vouchers, layout: AdminLayout },

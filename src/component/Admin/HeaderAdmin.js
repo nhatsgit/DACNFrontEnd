@@ -28,6 +28,8 @@ function HeaderAdmin() {
                   <li><Link to={routePaths.Brands}>Thương hiệu</Link></li>
                   <li><Link to={routePaths.productcategory}>Danh mục</Link></li>
                   <li><Link to={routePaths.vouchers}>Mã giảm giá</Link></li>
+                  <li><Link to={routePaths.UserClaims}>UserClaims</Link></li>
+                  <li><Link to={routePaths.RoleClaims}>RoleClaims</Link></li>
                   {/* <li><a href='/StoreAdmin'>Cửa hàng</a></li>
                   <li><a href='/Brands'>Thương hiệu</a></li>
                   <li><a href='/ProductCategory'>Danh mục</a></li>
